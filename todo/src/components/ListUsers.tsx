@@ -1,5 +1,5 @@
-import { Container, Paper, useTheme } from "@mui/material";
-import { FC, useState } from "react";
+import { Paper, useTheme } from "@mui/material";
+import { FC } from "react";
 import { useAppDispatch, useAppSelector } from "../hook/hook";
 import { increment } from "../slices/testSlice";
 import { userApi } from "../slices/userApi";
@@ -35,14 +35,7 @@ const ListUsers: FC<ListUserProps> = ({ test }) => {
           {user.name} , <b>Phone</b>: {user.phone}
         </h2>
       )}
-      <ul>
-        {test.map((user) => (
-          <li key={user.id}>
-            <b>Name</b>: {user.name} <b>Email</b>: {user.email} <b>Phone</b>:{" "}
-            {user.phone}
-          </li>
-        ))}
-      </ul>
+      <ul></ul>
       {/* {users && users.map((user) => console.log(user))} */}
       <button onClick={() => dispatch(increment())}>click</button>
     </div>

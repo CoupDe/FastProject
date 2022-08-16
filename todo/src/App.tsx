@@ -1,12 +1,15 @@
-import { CssBaseline } from "@mui/material";
+import { Box, Container, CssBaseline } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import { createContext } from "react";
-import ListUsers from "./components/ListUsers";
-import Login from "./components/Login";
+
+import LoginLayout from "./Layout/LoginLayout";
+import { BackgroundBox } from "./StyledApp";
+
 import ChangeColorTheme from "./theme/theme";
 import ColorThemeButton from "./ui/ColorThemeButton";
 
-export const ColorModeContext = createContext(() => {}); //При создании контекста необходимо указывать тип в т.ч. и функцию
+export const ColorModeContext = createContext(() => {});
+//При создании контекста необходимо указывать тип в т.ч. и функцию
 const test = [
   {
     id: 1,
@@ -26,18 +29,22 @@ const test = [
 
 function App() {
   const { theme, colorMode } = ChangeColorTheme();
-  console.log("Render APP.tsx");
+  console.log(theme);
   return (
     <>
       <ColorModeContext.Provider value={colorMode.changeColorMode}>
         <ThemeProvider theme={theme}>
           <CssBaseline>
-            <ColorThemeButton />
-            <Login label={"Vot i TS"}></Login>
-            <ListUsers test={test} />
+            <BackgroundBox themeColor={theme.palette.mode}>
+              <Container>
+                <LoginLayout />
+              </Container>
+              <ColorThemeButton />
+            </BackgroundBox>
           </CssBaseline>
         </ThemeProvider>
       </ColorModeContext.Provider>
+      
     </>
   );
 }

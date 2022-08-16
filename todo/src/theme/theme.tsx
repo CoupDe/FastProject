@@ -1,6 +1,7 @@
-import { PaletteMode } from "@mui/material";
-import { createTheme } from "@mui/material/styles";
-import { useMemo, useState } from "react";
+import { Palette } from "@mui/icons-material";
+import { PaletteMode, useMediaQuery } from "@mui/material";
+import { createTheme, Theme } from "@mui/material/styles";
+import { useEffect, useMemo, useState } from "react";
 
 export const colorTheme = (mode: PaletteMode) => ({
   palette: {
@@ -14,7 +15,7 @@ export const colorTheme = (mode: PaletteMode) => ({
             main: "#ff5500",
           },
           background: {
-            paper: "#b1b1b1",
+            paper: "#cec9c9",
           },
           info: {
             main: "#3388dd",
@@ -28,34 +29,57 @@ export const colorTheme = (mode: PaletteMode) => ({
           // palette values for dark mode
           primary: {
             main: "#fff",
-            light: "#5a5a5a",
-            dark: "#252424",
-            contrastText: "#fff",
           },
+          error: { main: "#f18484" },
           secondary: {
-            main: "#ff5500",
+            main: "#fff",
+            light: "#FF7733",
           },
           background: {
-            paper: "#b1b0b0",
-            default: "#373737",
+            paper: "#5d5c5c",
           },
           info: {
             main: "#3388dd",
           },
           text: {
             primary: "#ffffff",
+
             secondary: "#ffffff",
-            disabled: "rgba(255,255,255,0.5)",
-            hint: "rgba(255,255,255,0.5)",
           },
           divider: "rgba(115,113,113,0.12)",
         }),
   },
+});
+
+const themeComponents = (theme: Theme) => ({
   components: {
-    MuiButton: {
+    MuiInputLabel: {
       styleOverrides: {
-        outlined: {
-          color: mode === "light" ? "#0a0a0a" : "#fff",
+        root: {
+          color: theme.palette.text.primary,
+        },
+      },
+    },
+
+    //Переопределение стиля заливки при автокомплите
+    MuiInputBase: {
+      styleOverrides: {
+        input: {
+          fontSize: "1.5rem",
+
+          "&:-webkit-autofill": {
+            fontSize: "1.5rem",
+
+            WebkitBoxShadow: `0 0 0 100px ${theme.palette.background.paper} inset`,
+            WebkitTextFillColor: theme.palette.text.primary,
+          },
+        },
+      },
+    },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          backgroundImage: "none",
         },
       },
     },
@@ -63,7 +87,11 @@ export const colorTheme = (mode: PaletteMode) => ({
 });
 
 export default function ChangeColorTheme() {
-  const [themeColor, setThemeColor] = useState<"light" | "dark">("light");
+  //Определение темы по дефолту операционной системы
+  let defaultColorTheme = useMediaQuery("(prefers-color-scheme: light)");
+  const [themeColor, setThemeColor] = useState<"light" | "dark">(
+    defaultColorTheme ? "light" : "dark"
+  );
 
   const colorMode = useMemo(
     () => ({
@@ -73,12 +101,17 @@ export default function ChangeColorTheme() {
     }),
     []
   );
-
-  const theme = useMemo(
+  //Это реализовано с целью обновления стилей темы на основе созданной темы
+  const paletteTheme = useMemo(
     () => createTheme(colorTheme(themeColor)),
     [themeColor]
   );
+  const theme = useMemo(
+    () => createTheme(paletteTheme, themeComponents(paletteTheme)),
+    [paletteTheme]
+  );
 
+  console.log(theme);
   return { theme, colorMode };
 }
 
