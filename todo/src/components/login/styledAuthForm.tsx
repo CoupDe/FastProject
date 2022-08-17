@@ -1,7 +1,7 @@
-import { Box, TextField, useTheme } from "@mui/material";
-import styled, { keyframes } from "styled-components";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import InstagramIcon from "@mui/icons-material/Instagram";
+import { Box, FormControl, TextField } from "@mui/material";
+import styled, { keyframes } from "styled-components";
 
 const tocheSocial = keyframes` 
 {
@@ -67,6 +67,12 @@ export const StyledFieldBox = styled(Box)<FieldProps>`
     props.isError ? "flex-end" : "center"};
 `;
 
+export const StyledFormControl = styled(FormControl)<{ $isError: boolean }>`
+  & > p {
+    animation: ${(props) => props.$isError && errorShake} 0.3s both;
+  }
+`;
+
 export const StyledTextField = styled(TextField)<{ $isError: boolean }>`
   & > p {
     animation: ${(props) => props.$isError && errorShake} 0.3s both;
@@ -74,15 +80,14 @@ export const StyledTextField = styled(TextField)<{ $isError: boolean }>`
 `;
 
 export const StyledGitHubIcon = styled(GitHubIcon)`
-
   &:hover {
     animation: ${tocheSocial} 0.5s linear both;
   }
 `;
 
 export const StyledInstagramIcon = styled(InstagramIcon)`
-
   &:hover {
     animation: ${tocheSocial} 0.5s linear both;
   }
 `;
+
