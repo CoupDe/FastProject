@@ -10,7 +10,7 @@ import {
   InputLabel,
   Link,
   Paper,
-  Stack
+  Stack,
 } from "@mui/material";
 import { Formik } from "formik";
 import { signInSchema } from "../../validation/signInFormValidation";
@@ -18,7 +18,7 @@ import {
   StyledFieldBox,
   StyledFormControl,
   StyledGitHubIcon,
-  StyledInstagramIcon
+  StyledInstagramIcon,
 } from "./styledAuthForm";
 
 interface AuthFormValues {
@@ -28,7 +28,7 @@ interface AuthFormValues {
 interface NumberButtonProps {
   val: string;
 }
-
+//Скорее всего  кривое решение, поизучать и исправить!
 export function IconChange({ val }: NumberButtonProps) {
   let icon: JSX.Element;
   if (val.includes("@")) {
@@ -73,6 +73,7 @@ const AuthForm = () => {
             sx={{ mb: 2 }}
             spacing={2}
           >
+            <h1>{formik.isSubmitting.toString()}</h1>
             <StyledFieldBox>
               <IconChange val={formik.values.login} />
               <StyledFormControl
@@ -119,7 +120,11 @@ const AuthForm = () => {
               </StyledFormControl>
             </StyledFieldBox>
 
-            <Button disabled={!formik.isValid} type="submit" size="large">
+            <Button
+              disabled={!(formik.isValid && formik.dirty)}
+              type="submit"
+              size="large"
+            >
               Войти
             </Button>
             <Button size="large">Регистрация</Button>

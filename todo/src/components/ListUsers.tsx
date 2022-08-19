@@ -1,43 +1,25 @@
-import { Paper, useTheme } from "@mui/material";
-import { FC } from "react";
-import { useAppDispatch, useAppSelector } from "../hook/hook";
-import { increment } from "../slices/testSlice";
-import { userApi } from "../slices/userApi";
-import { IUser } from "../typeinterfaces/types";
+import { Paper } from "@mui/material";
+import { useAppDispatch } from "../hook/hook";
+import { taskApi } from "../slices/taskApiSlice";
 
-interface ListUserProps {
-  test: IUser[];
-}
+import { ITaskList, IUser } from "../typeinterfaces/types";
 
-const ListUsers: FC<ListUserProps> = ({ test }) => {
+const ListUsers = () => {
   const dispatch = useAppDispatch();
 
-  const { data: users, isLoading } = userApi.useGetUsersQuery();
-  const theme = useTheme();
-  const count = useAppSelector((state) => state.counter.value);
-  const {
-    data: user,
-    isLoading: load,
-    error,
-    isSuccess,
-  } = userApi.useGetUserQuery(count + 1);
-
+  const { data: taskList, isLoading } = taskApi.useGetTaskListQuery();
+  console.log(taskList);
+  const ss: ITaskList = taskList!;
+  console.log(typeof(ss.tasks.length))
+  
+  console.log(ss);
   return (
     <div>
       <Paper>
-        <h1>{count}</h1>
+        <h1>{}</h1>
       </Paper>
-      {load && <h2>...Load</h2>}
-      {error && <h2>Ошибка</h2>}
 
-      {isSuccess && (
-        <h2>
-          {user.name} , <b>Phone</b>: {user.phone}
-        </h2>
-      )}
       <ul></ul>
-      {/* {users && users.map((user) => console.log(user))} */}
-      <button onClick={() => dispatch(increment())}>click</button>
     </div>
   );
 };

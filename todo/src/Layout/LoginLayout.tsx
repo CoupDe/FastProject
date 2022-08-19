@@ -1,5 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import React, { FC } from "react";
+import ListUsers from "../components/ListUsers";
 import AuthForm from "../components/login/AuthForm";
 import { signInSchema } from "../validation/signInFormValidation";
 
@@ -39,6 +40,7 @@ const LoginLayout = ({ children }: LoginLayoutProps) => {
             </Box>
           </Typography>
           <AuthForm />
+          <ListUsers/>
 
           {children}
           

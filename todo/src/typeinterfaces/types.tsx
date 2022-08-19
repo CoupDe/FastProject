@@ -6,10 +6,14 @@ export interface IUser {
   phone: string;
 }
 
-export interface ITask {
+export type ITask ={
   id: number;
-  data_create?: Date;
-  data_execution?: Date;
+  data_create: Date;
+  data_execution: Date;
   description: string;
   isComplete: boolean;
+}
+
+export interface ITaskList {
+  tasks: ITask[];
 }

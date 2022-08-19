@@ -1,14 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { taskApi } from "./taskApiSlice";
 import { counterSlice } from "./testSlice";
 import { userApi } from "./userApi";
 
 export const store = configureStore({
   reducer: {
-    [userApi.reducerPath]: userApi.reducer,
-    counter: counterSlice.reducer,
+    [taskApi.reducerPath]: taskApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(userApi.middleware), //Необходим для использования функционала RTKQ
+    getDefaultMiddleware().concat(taskApi.middleware), //Необходим для использования функционала RTKQ
 });
 
 export type RootState = ReturnType<typeof store.getState>;
