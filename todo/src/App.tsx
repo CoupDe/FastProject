@@ -1,4 +1,4 @@
-import { Box, Container, CssBaseline } from "@mui/material";
+import { Container, CssBaseline } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import { createContext } from "react";
 
@@ -29,7 +29,7 @@ const test = [
 
 function App() {
   const { theme, colorMode } = ChangeColorTheme();
-  console.log(theme);
+
   return (
     <>
       <ColorModeContext.Provider value={colorMode.changeColorMode}>
@@ -44,7 +44,6 @@ function App() {
           </CssBaseline>
         </ThemeProvider>
       </ColorModeContext.Provider>
-      
     </>
   );
 }

@@ -90,4 +90,3 @@ export const StyledInstagramIcon = styled(InstagramIcon)`
     animation: ${tocheSocial} 0.5s linear both;
   }
 `;
-

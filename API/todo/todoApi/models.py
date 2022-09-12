@@ -21,10 +21,13 @@ class BaseModel(models.Model):
 
 
 class Task(BaseModel):
-    description = models.CharField(
+    short_description = models.CharField(
         max_length=300, verbose_name='Краткое описание')
-    task = models.TextField(
+    description = models.TextField(
         blank=False, verbose_name='Задача', default='Описание')
-    isComplete = models.BooleanField(verbose_name="Выполенено")
+    isComplete = models.BooleanField(verbose_name="Выполенено", default=False)
     importance_task = models.CharField(
         max_length=30, choices=Priority.choices, default=Priority.MEDIUM, verbose_name='Важность задачи')
+
+    def __str__(self):
+        return f'%{self.description}'

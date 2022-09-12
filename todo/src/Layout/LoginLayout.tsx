@@ -1,15 +1,13 @@
 import { Box, Typography } from "@mui/material";
-import React, { FC } from "react";
-import ListUsers from "../components/ListUsers";
+import React from "react";
 import AuthForm from "../components/login/AuthForm";
-import { signInSchema } from "../validation/signInFormValidation";
+import TaskList from "../components/TaskList";
 
 interface LoginLayoutProps {
   children?: React.ReactNode;
 }
 
 const LoginLayout = ({ children }: LoginLayoutProps) => {
-
   return (
     <>
       <main>
@@ -40,10 +38,9 @@ const LoginLayout = ({ children }: LoginLayoutProps) => {
             </Box>
           </Typography>
           <AuthForm />
-          <ListUsers/>
+          <TaskList />
 
           {children}
-          
         </Box>
       </main>
     </>

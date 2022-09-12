@@ -3,6 +3,12 @@ import { PaletteMode, useMediaQuery } from "@mui/material";
 import { createTheme, Theme } from "@mui/material/styles";
 import { useEffect, useMemo, useState } from "react";
 
+import { Theme as MuiTheme } from "@mui/material/styles";
+// Необходимо для использования хука useTheme от MUI
+declare module "@emotion/react" {
+  export interface Theme extends MuiTheme {}
+}
+
 export const colorTheme = (mode: PaletteMode) => ({
   palette: {
     mode,
@@ -30,7 +36,10 @@ export const colorTheme = (mode: PaletteMode) => ({
           primary: {
             main: "#fff",
           },
-          error: { main: "#f18484" },
+          error: {
+            main: "#f18484",
+          },
+
           secondary: {
             main: "#fff",
             light: "#FF7733",
@@ -111,7 +120,6 @@ export default function ChangeColorTheme() {
     [paletteTheme]
   );
 
-  console.log(theme);
   return { theme, colorMode };
 }
 

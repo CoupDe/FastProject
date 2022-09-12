@@ -3,11 +3,11 @@ import { object, string, number, date, InferType } from "yup";
 const languageRegex = /^[\w@.]+$/;
 
 export const signInSchema = object({
-  login: string()
+  login_field: string()
     .trim()
     .lowercase()
     .matches(languageRegex, "Только латиница")
-    .min(5, "Должно быть не менее пяти символов")
+    .min(4, "Должно быть не менее четырёх символов")
     .required("Поле является обязательным для заполнения"),
   email: string()
     .email("Должен содержать `@` и домен `.`")
@@ -19,4 +19,4 @@ export const signInSchema = object({
     .required("Поле является обязательным для заполнения"),
 });
 
-export type User = InferType<typeof signInSchema>;
+export type LoginInput = InferType<typeof signInSchema>;

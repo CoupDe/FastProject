@@ -1,19 +1,70 @@
 export interface IUser {
-  id: number;
-  name: string;
+  user: {
+    id: number;
+    first_name: string;
+    username: string;
+    email: string;
+  };
+  token: { access: string; refresh: string };
+}
+//************FORM TYPES & INTERFACE*************************************
+export interface IAuthFormValuesByToken {
+  login_field: string;
+  password: string;
+}
+//***************API AUTH TYPES & INTERFACE***************
+export interface IAuthRequest {
+  login_field: string;
+  password: string;
+}
+export interface IUserToken {
+  access: string;
+  refresh: string;
+}
+export interface IUserInfo {
   username: string;
-  email: string;
-  phone: string;
+  first_name: string;
 }
-
-export type ITask ={
-  id: number;
-  data_create: Date;
-  data_execution: Date;
+// export type UserFetchData = IUserToken & IUserInfo;
+export interface UserFetchData extends IUserToken, IUserInfo {}
+//***************Расширение сделано с целью
+//представления данных в более понятном стиле***************
+export interface IUserAuth {
+  token: IUserToken;
+  userinfo: IUserInfo;
+}
+//***************API TASK TYPES & INTERFACE***************
+export interface ITask {
+  created_at: Date;
   description: string;
+  id: number;
+  importance_task: string;
+  task: string;
   isComplete: boolean;
+  updated_at: Date;
 }
 
-export interface ITaskList {
-  tasks: ITask[];
+//***************ERROR TYPES & INTERFACE***************
+export interface IError {
+  detail?: string[];
+}
+
+export interface IAuthFormError {
+  status: any;
+  data?: unknown;
+}
+
+export interface IStatusProps {
+  isError: boolean;
+  errorMessage: string;
+  isSuccess: boolean;
+  isLoading: boolean;
+  first_name: string;
+}
+
+export interface IStatusAuthInfo {
+  authLogInfo: {
+    status: "error" | "loading" | "success" | "default";
+    payloadInfo: string;
+  };
 }

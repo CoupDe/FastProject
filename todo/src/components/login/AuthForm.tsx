@@ -1,6 +1,7 @@
 import EmailIcon from "@mui/icons-material/Email";
 import KeyIcon from "@mui/icons-material/Key";
 import LockIcon from "@mui/icons-material/Lock";
+import LockOpenIcon from "@mui/icons-material/LockOpen";
 import PersonIcon from "@mui/icons-material/Person";
 import {
   Box,
@@ -13,6 +14,18 @@ import {
   Stack,
 } from "@mui/material";
 import { Formik } from "formik";
+import { useEffect, useState } from "react";
+import { useLoginUserByTokenMutation } from "../../api/authApi";
+import {
+  authErrorHandler,
+  isFetchBaseQueryError,
+} from "../../services/errorHandlers/authErrors";
+// import { AuthErrorData } from "../../services/errorHandlers/authErrors";
+import { useDispatch } from "react-redux";
+import {
+  IAuthFormValuesByToken,
+  IStatusAuthInfo,
+} from "../../typeinterfaces/types";
 import { signInSchema } from "../../validation/signInFormValidation";
 import {
   StyledFieldBox,
@@ -21,29 +34,57 @@ import {
   StyledInstagramIcon,
 } from "./styledAuthForm";
 
-interface AuthFormValues {
-  login: string;
-  password: string;
-}
-interface NumberButtonProps {
-  val: string;
-}
+import { getStatus } from "../../services/errorHandlers/statusBarAuth";
+import StatusAuthBar from "./StatusAuthBar";
+import { statusAuth } from "../../slices/authSlice";
+
+const initialValuesToken: IAuthFormValuesByToken = {
+  login_field: "",
+  password: "",
+};
+
+let statusInfo: IStatusAuthInfo = {
+  authLogInfo: { status: "default", payloadInfo: "" },
+};
 //Скорее всего  кривое решение, поизучать и исправить!
-export function IconChange({ val }: NumberButtonProps) {
+//Функция возвращает компонент с иконкой в поле ввода логина
+const IconLoginField = ({ val }: { val: string }): JSX.Element => {
   let icon: JSX.Element;
   if (val.includes("@")) {
     icon = <EmailIcon fontSize="large" sx={{ mx: 0.3 }} />;
   } else {
     icon = <PersonIcon fontSize="large" sx={{ mx: 0.3 }} />;
   }
-
   return <>{icon}</>;
-}
+};
+
 const AuthForm = () => {
-  const initialValues: AuthFormValues = {
-    login: "",
-    password: "",
-  };
+  const [tokenAuth, { data, error: authError, isSuccess, isError, isLoading }] =
+    useLoginUserByTokenMutation();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    let errorMessage: string = "";
+    if (authError) {
+      if (isFetchBaseQueryError(authError)) {
+        errorMessage = authErrorHandler(authError!) as string;
+      }
+    }
+
+    const first_name = data?.userinfo.first_name || "";
+    dispatch(
+      statusAuth(
+        getStatus({
+          isError,
+          errorMessage,
+          isSuccess,
+          first_name,
+          isLoading,
+        })
+      )
+    );
+    console.log(statusInfo);
+  }, [data, authError, isError, isSuccess, isLoading, dispatch]);
 
   return (
     <Paper
@@ -57,13 +98,23 @@ const AuthForm = () => {
       }}
       elevation={18}
     >
-      <LockIcon
-        color="action"
-        sx={{ fontSize: "70px", margin: "30px auto 0 auto" }}
-      />
-      <Formik<AuthFormValues>
-        initialValues={initialValues}
-        onSubmit={(values) => alert(JSON.stringify(values, null, 2))}
+      {isSuccess ? (
+        <LockOpenIcon
+          color="success"
+          sx={{ fontSize: "70px", margin: "30px auto 0 auto" }}
+        />
+      ) : (
+        <LockIcon
+          color={authError ? "error" : "action"}
+          sx={{ fontSize: "70px", margin: "30px auto 0 auto" }}
+        />
+      )}
+      <Box sx={{ margin: "0 auto" }}>
+        <StatusAuthBar {...statusInfo} />
+      </Box>
+      <Formik
+        initialValues={initialValuesToken}
+        onSubmit={(values) => tokenAuth(values)}
         validationSchema={signInSchema}
       >
         {(formik) => (
@@ -73,25 +124,36 @@ const AuthForm = () => {
             sx={{ mb: 2 }}
             spacing={2}
           >
-            <h1>{formik.isSubmitting.toString()}</h1>
+            {/* <StatusAuthBar
+              status={{
+                error: error,
+                isSuccess: isSuccess,
+                isError: isError,
+                isSubmitting: formik.isSubmitting,
+              }}
+            /> */}
             <StyledFieldBox>
-              <IconChange val={formik.values.login} />
+              <IconLoginField val={formik.values.login_field} />
               <StyledFormControl
-                error={formik.touched.login && !!formik.errors.login}
+                error={
+                  formik.touched.login_field && !!formik.errors.login_field
+                }
                 variant="standard"
                 sx={{ width: "100%", mr: 1 }}
-                $isError={!!formik.touched.login && !!formik.errors.login}
+                $isError={
+                  !!formik.touched.login_field && !!formik.errors.login_field
+                }
               >
-                <InputLabel htmlFor="login ">Логин или email</InputLabel>
+                <InputLabel htmlFor="login_field ">Логин или email</InputLabel>
                 <Input
-                  {...formik.getFieldProps("login")}
-                  type="login"
-                  id="login"
+                  {...formik.getFieldProps("login_field")}
+                  type="login_field"
+                  id="login_field"
                 />
 
                 <FormHelperText>
-                  {!!formik.errors.login && formik.values.login
-                    ? formik.errors.login
+                  {!!formik.errors.login_field && formik.values.login_field
+                    ? formik.errors.login_field
                     : " "}
                 </FormHelperText>
               </StyledFormControl>
@@ -121,7 +183,9 @@ const AuthForm = () => {
             </StyledFieldBox>
 
             <Button
-              disabled={!(formik.isValid && formik.dirty)}
+              disabled={
+                !(formik.isValid && formik.dirty && !formik.isSubmitting)
+              }
               type="submit"
               size="large"
             >
