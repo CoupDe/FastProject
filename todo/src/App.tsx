@@ -1,31 +1,17 @@
 import { Container, CssBaseline } from "@mui/material";
-import { ThemeProvider } from "@mui/material/styles";
+import { ThemeProvider as MuiThemeProvider } from "@mui/material/styles";
 import { createContext } from "react";
-
+import { Route, Routes } from "react-router-dom";
+import HomePage from "./components/Home/HomePage";
+import LoginPage from "./components/login/LoginPage";
 import LoginLayout from "./Layout/LoginLayout";
 import { BackgroundBox } from "./StyledApp";
-
+import { StyledEngineProvider } from "@mui/material/styles";
 import ChangeColorTheme from "./theme/theme";
 import ColorThemeButton from "./ui/ColorThemeButton";
 
 export const ColorModeContext = createContext(() => {});
 //При создании контекста необходимо указывать тип в т.ч. и функцию
-const test = [
-  {
-    id: 1,
-    name: "Leanne Graham",
-    username: "Bret",
-    email: "Sincere@april.biz",
-    phone: "8-296575563",
-  },
-  {
-    id: 2,
-    name: "Ervin Howell",
-    username: "Antonette",
-    email: "Shanna@melissa.tv",
-    phone: "8-296575563",
-  },
-];
 
 function App() {
   const { theme, colorMode } = ChangeColorTheme();
@@ -33,16 +19,23 @@ function App() {
   return (
     <>
       <ColorModeContext.Provider value={colorMode.changeColorMode}>
-        <ThemeProvider theme={theme}>
-          <CssBaseline>
-            <BackgroundBox themeColor={theme.palette.mode}>
-              <Container>
-                <LoginLayout />
-              </Container>
-              <ColorThemeButton />
-            </BackgroundBox>
-          </CssBaseline>
-        </ThemeProvider>
+        <StyledEngineProvider injectFirst>
+          <MuiThemeProvider theme={theme}>
+            <CssBaseline>
+              <BackgroundBox themeColor={theme.palette.mode}>
+                <Container>
+                  <Routes>
+                    <Route element={<LoginLayout />}>
+                      <Route index element={<HomePage />} />
+                      <Route path="/login" element={<LoginPage />} />
+                    </Route>
+                  </Routes>
+                </Container>
+                <ColorThemeButton />
+              </BackgroundBox>
+            </CssBaseline>
+          </MuiThemeProvider>
+        </StyledEngineProvider>
       </ColorModeContext.Provider>
     </>
   );

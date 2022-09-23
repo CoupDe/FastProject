@@ -30,9 +30,11 @@ export interface UserFetchData extends IUserToken, IUserInfo {}
 //***************Расширение сделано с целью
 //представления данных в более понятном стиле***************
 export interface IUserAuth {
-  token: IUserToken;
+  token: IUserToken | null;
   userinfo: IUserInfo;
+  isAuth?: boolean;
 }
+
 //***************API TASK TYPES & INTERFACE***************
 export interface ITask {
   created_at: Date;
@@ -67,4 +69,9 @@ export interface IStatusAuthInfo {
     status: "error" | "loading" | "success" | "default";
     payloadInfo: string;
   };
+}
+//***************GAME***************
+export interface IGameStep {
+  compStep: number[];
+  playerStep: number[];
 }

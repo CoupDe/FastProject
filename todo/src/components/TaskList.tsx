@@ -1,22 +1,20 @@
 import { Paper } from "@mui/material";
-import { authApi } from "../api/authApi";
-
-import { taskApi } from "../slices/taskApiSlice";
+import { useGetUsersQuery } from "../api/authApi";
 
 const TaskList = () => {
+  const { data: usersList } = useGetUsersQuery();
+  function getData() {
+    console.log(usersList);
+  }
+  console.log("TASK");
 
-  const { data: usersList } = authApi.useGetUsersQuery();
-  const { data: taskList, isLoading, error } = taskApi.useFetchTaskListQuery();
-  console.log(usersList);
-
-  taskList?.map((task) => console.log(task.id));
-
+  if (usersList) {
+    console.log("TASK", usersList);
+  }
   return (
     <div>
-      <Paper>
-        <h1>{}</h1>
-      </Paper>
-
+      <Paper>asd</Paper>
+      <button onClick={() => getData()}>ads</button>
       <ul></ul>
     </div>
   );

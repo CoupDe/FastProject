@@ -35,7 +35,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
     def validate(self, data):
         dataRequest = {}
-        print('OBTAIN SERIALIZERS ')
+
         # В методе validate мы убеждаемся, что текущий экземпляр
         # LoginSerializer значение valid. В случае входа пользователя в систему
         # это означает подтверждение того, что присутствуют адрес электронной

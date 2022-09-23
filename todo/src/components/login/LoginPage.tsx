@@ -11,32 +11,32 @@ import {
   InputLabel,
   Link,
   Paper,
-  Stack,
+  Stack
 } from "@mui/material";
 import { Formik } from "formik";
-import { useEffect, useState } from "react";
-import { useLoginUserByTokenMutation } from "../../api/authApi";
+import { useEffect } from "react";
+import { useSignInMutation } from "../../api/authApi";
 import {
   authErrorHandler,
-  isFetchBaseQueryError,
+  isFetchBaseQueryError
 } from "../../services/errorHandlers/authErrors";
 // import { AuthErrorData } from "../../services/errorHandlers/authErrors";
 import { useDispatch } from "react-redux";
 import {
   IAuthFormValuesByToken,
-  IStatusAuthInfo,
+  IStatusAuthInfo
 } from "../../typeinterfaces/types";
 import { signInSchema } from "../../validation/signInFormValidation";
 import {
   StyledFieldBox,
   StyledFormControl,
   StyledGitHubIcon,
-  StyledInstagramIcon,
+  StyledInstagramIcon
 } from "./styledAuthForm";
 
 import { getStatus } from "../../services/errorHandlers/statusBarAuth";
-import StatusAuthBar from "./StatusAuthBar";
 import { statusAuth } from "../../slices/authSlice";
+import StatusAuthBar from "./StatusAuthBar";
 
 const initialValuesToken: IAuthFormValuesByToken = {
   login_field: "",
@@ -58,11 +58,14 @@ const IconLoginField = ({ val }: { val: string }): JSX.Element => {
   return <>{icon}</>;
 };
 
-const AuthForm = () => {
+const LoginPage = () => {
   const [tokenAuth, { data, error: authError, isSuccess, isError, isLoading }] =
-    useLoginUserByTokenMutation();
+    useSignInMutation();
   const dispatch = useDispatch();
 
+  // Выглядит нагроможденно, вероятно надо переписать
+  // Сам эффект выполняет роль диспатча обработанных данных через 'хелпер' getStatus
+  // Обработка заключается в приведении в более читаемый формат
   useEffect(() => {
     let errorMessage: string = "";
     if (authError) {
@@ -83,7 +86,6 @@ const AuthForm = () => {
         })
       )
     );
-    console.log(statusInfo);
   }, [data, authError, isError, isSuccess, isLoading, dispatch]);
 
   return (
@@ -124,14 +126,6 @@ const AuthForm = () => {
             sx={{ mb: 2 }}
             spacing={2}
           >
-            {/* <StatusAuthBar
-              status={{
-                error: error,
-                isSuccess: isSuccess,
-                isError: isError,
-                isSubmitting: formik.isSubmitting,
-              }}
-            /> */}
             <StyledFieldBox>
               <IconLoginField val={formik.values.login_field} />
               <StyledFormControl
@@ -220,4 +214,4 @@ const AuthForm = () => {
   );
 };
 
-export default AuthForm;
+export default LoginPage;

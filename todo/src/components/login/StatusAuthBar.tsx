@@ -19,7 +19,7 @@ const StatusAuthBar: React.FC<IStatusAuthInfo> = (): JSX.Element => {
       return <SyncLoader loading={true} color={theme.palette.action.active} />;
     case "success":
       return (
-        <Typography color="success.main">{`Добро пожаловать, ${payloadInfo}`}</Typography>
+        <Typography color="success.main">{`Добро пожаловать, ${payloadInfo}!`}</Typography>
       );
     case "default":
       return <Typography>{` `}</Typography>;

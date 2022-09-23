@@ -50,10 +50,10 @@ class MyTokenObtainPairView(TokenObtainPairView):
     def post(self, request):
         user = request.data
         # Поставить признак передаваемого поля (EMAIL или USERNAME)
-        
+
         serializer = self.serializer_class(data=user)
 
         # указанный параметр вызвает описание ошибки из сериализатора данного view serializers.ValidationError
         serializer.is_valid(raise_exception=True)
-        print('VIEW', serializer.data)
+
         return Response(serializer.data, status=status.HTTP_200_OK)

@@ -1,13 +1,12 @@
 import { Box, Typography } from "@mui/material";
 import React from "react";
-import AuthForm from "../components/login/AuthForm";
-import TaskList from "../components/TaskList";
-
+import { Outlet } from "react-router-dom";
+import HomePage from "../components/Home/HomePage";
 interface LoginLayoutProps {
   children?: React.ReactNode;
 }
 
-const LoginLayout = ({ children }: LoginLayoutProps) => {
+const LoginLayout = () => {
   return (
     <>
       <main>
@@ -15,7 +14,7 @@ const LoginLayout = ({ children }: LoginLayoutProps) => {
           sx={{
             display: "flex",
             margin: "0 auto",
-            width: "100vh",
+            width: "100%",
             height: "100vh",
             flexDirection: "column",
             justifyContent: "center",
@@ -37,10 +36,8 @@ const LoginLayout = ({ children }: LoginLayoutProps) => {
               шник
             </Box>
           </Typography>
-          <AuthForm />
-          <TaskList />
 
-          {children}
+          <Outlet />
         </Box>
       </main>
     </>

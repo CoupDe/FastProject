@@ -1,9 +1,8 @@
-import { Box, Button, useTheme } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
 import { FC, useContext, useState } from "react";
-import { SwitchTransition, Transition } from "react-transition-group";
+import { Transition } from "react-transition-group";
 import { ColorModeContext } from "../App";
 import IconStep from "./animation/animationColorThemeButton";
-import { MySunRise2 } from "./animation/StyledSvgIcon";
 
 import "./testBtnCss.css";
 
@@ -30,9 +29,7 @@ const ColorThemeButton: FC<IColorButtonProps> = () => {
 
   const theme = useTheme();
 
-  function handleShowTransition() {
-    setHoverTransition((prev) => !hoverTransition);
-  }
+
   function handleHoverTransitionOver(
     event: React.MouseEvent<HTMLOrSVGElement, MouseEvent>
   ): void {
@@ -48,7 +45,6 @@ const ColorThemeButton: FC<IColorButtonProps> = () => {
     setSwitchColorMode((prev) => !switchColorMode);
 
     changeColorMode();
-    // console.log(switchTransition);
   }
 
   return (
