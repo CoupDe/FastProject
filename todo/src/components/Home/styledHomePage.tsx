@@ -1,7 +1,6 @@
-import { Paper } from "@mui/material";
+import { Box, Paper } from "@mui/material";
 import { default as MyGrid } from "@mui/material/Unstable_Grid2";
 import styled, { keyframes } from "styled-components";
-import { boolean } from "yup/lib/locale";
 const slidein = keyframes`
   0% {
     transform: translateZ(-1400px);
@@ -48,8 +47,6 @@ export const StyledGrid = styled(MyGrid)`
 `;
 
 export const MyItem = styled(Paper)<ICardProps>`
- 
-
   display: flex;
   justify-self: center;
   justify-content: center;
@@ -61,14 +58,19 @@ export const MyItem = styled(Paper)<ICardProps>`
       cubic-bezier(0.455, 0.03, 0.515, 0.955) both;
   }
 `;
-// export const MyItem = styled(Paper)`
-//   ${({ theme }) => `
-//   height: 100%;
-//   color: red;
-//   animation: ${slidein} 0.6s ease-in both;
-//   &:hover {
-//     background-color: ${theme.palette.error.main};
-//     cursor: pointer;
-
-//   `}
-// `;
+export const Reload = styled(Box)`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  z-index: 10;
+  background-color: #fff5;
+  transition: background-color 0.2s ease-in-out;
+  &:hover {
+    background-color: #fff1;
+  }
+`;

@@ -74,4 +74,5 @@ export interface IStatusAuthInfo {
 export interface IGameStep {
   compStep: number[];
   playerStep: number[];
+  
 }
