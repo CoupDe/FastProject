@@ -68,9 +68,9 @@ export const Reload = styled(Box)`
   align-items: center;
   display: flex;
   z-index: 10;
-  background-color: #fff5;
+  background-color: #fff1;
   transition: background-color 0.2s ease-in-out;
   &:hover {
-    background-color: #fff1;
+    background-color: #fff5;
   }
 `;

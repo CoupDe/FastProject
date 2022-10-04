@@ -41,8 +41,8 @@ export const colorTheme = (mode: PaletteMode) => ({
           },
 
           secondary: {
-            main: "#fff",
-            light: "#FF7733",
+            main: "#FF7733",
+            light: "#fff",
           },
           background: {
             paper: "#5d5c5c",

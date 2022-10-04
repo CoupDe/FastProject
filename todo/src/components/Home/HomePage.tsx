@@ -1,40 +1,37 @@
 import { Replay } from "@mui/icons-material";
 import CloseIcon from "@mui/icons-material/Close";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
-import { Box, Grow } from "@mui/material";
+import { Box, Fab, Grow } from "@mui/material";
 import { default as MyGrid } from "@mui/material/Unstable_Grid2"; // Grid version 2
 import { useEffect, useState } from "react";
 import { machineStep } from "../../services/gameLogic/gameLogic";
-import { IGameStep } from "../../typeinterfaces/types";
+import { IGameStep, IStatusGame } from "../../typeinterfaces/types";
 import PreviewIntro from "./PreviewIntro";
 import { MyItem, Reload, StyledGrid } from "./styledHomePage";
-interface IWinnerComb {
-  winner: number[];
-}
 
 const HomePage = () => {
   const [showGame, setShowGame] = useState<boolean>(false);
-  const [winCombination, setWinCombination] = useState<IWinnerComb>({
-    winner: [],
+
+  const [statusGame, setStatusGame] = useState<IStatusGame>({
+    winner: null,
+    draw: false,
   });
-  const [statusGame, setStatusGame] = useState();
   const [touch, setTouched] = useState<boolean>(false);
   const [step, setStep] = useState<IGameStep>({
     compStep: [],
     playerStep: [],
   });
-  let allSteps: number[] = [];
 
   useEffect(() => {
-    console.log("USEeFFECT", winCombination);
-  }, [winCombination]);
+    console.log("USEeFFECT", statusGame);
+  }, [statusGame]);
   function startGame() {
     setShowGame(true);
     setTimeout(
       () =>
         setStep((prev) => ({
           playerStep: [...prev.playerStep],
-          compStep: [...prev.compStep, Math.floor(Math.random() * 9)],
+          compStep: [...prev.compStep, Math.floor(Math.random() * 9)], //
         })),
 
       500
@@ -47,10 +44,11 @@ const HomePage = () => {
     if (!step.playerStep.includes(id) && !step.compStep.includes(id)) {
       const playerStep = step.playerStep.concat(id);
       const compStep = step.compStep;
-      const logicStep = machineStep(playerStep, compStep);
+      const allStep = [...playerStep, ...compStep];
+      const logicStep = machineStep(playerStep, compStep, allStep);
 
-      logicStep.winner && setWinCombination({ winner: [...logicStep.winner] });
-
+      setStatusGame({ ...logicStep.statusGame });
+      console.log(logicStep);
       // setStep({ playerStep: step.playerStep.concat(id), compStep: [id] });
       setStep((prev) => ({
         playerStep: [...prev.playerStep, id],
@@ -64,14 +62,14 @@ const HomePage = () => {
       return (
         <CloseIcon
           sx={{ width: "140px", height: "140px" }}
-          color={winCombination.winner.includes(index) ? "success" : "primary"}
+          color={statusGame.winner?.includes(index) ? "success" : "primary"}
         />
       );
     } else if (step.compStep.includes(index)) {
       return (
         <RadioButtonUncheckedIcon
           sx={{ width: "110px", height: "110px" }}
-          color={winCombination.winner.includes(index) ? "success" : "primary"}
+          color={statusGame.winner?.includes(index) ? "success" : "primary"}
         />
       );
     } else {
@@ -105,9 +103,17 @@ const HomePage = () => {
             position: "relative",
           }}
         >
-          <Reload>
-            <Replay sx={{}} fontSize="large" />
-          </Reload>
+          {(statusGame.winner !== null || statusGame.draw) && (
+            <Reload>
+              <Fab
+                color="secondary"
+                sx={{ height: "100px", width: "100px", opacity: "0.9" }}
+                aria-label="replay"
+              >
+                <Replay fontSize="large" />
+              </Fab>
+            </Reload>
+          )}
           {/* Скачет разметка */}
           {showGame &&
             Array.from(Array(9)).map((_, index) => {
