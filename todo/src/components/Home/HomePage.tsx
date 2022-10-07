@@ -1,7 +1,7 @@
 import { Replay } from "@mui/icons-material";
 import CloseIcon from "@mui/icons-material/Close";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
-import { Box, Fab, Grow } from "@mui/material";
+import { Box, Fab, Fade, Typography } from "@mui/material";
 import { default as MyGrid } from "@mui/material/Unstable_Grid2"; // Grid version 2
 import { useEffect, useState } from "react";
 import { machineStep } from "../../services/gameLogic/gameLogic";
@@ -16,40 +16,66 @@ const HomePage = () => {
     winner: null,
     draw: false,
   });
-  const [touch, setTouched] = useState<boolean>(false);
+ 
+  const [isTouch, setTouch] = useState<boolean[]>(Array(9).fill(false));
+
   const [step, setStep] = useState<IGameStep>({
     compStep: [],
     playerStep: [],
   });
 
   useEffect(() => {
-    console.log("USEeFFECT", statusGame);
-  }, [statusGame]);
-  function startGame() {
-    setShowGame(true);
-    setTimeout(
-      () =>
-        setStep((prev) => ({
-          playerStep: [...prev.playerStep],
-          compStep: [...prev.compStep, Math.floor(Math.random() * 9)], //
-        })),
-
-      500
-    );
+    console.log("USEeFFECT", isTouch);
+  }, [isTouch]);
+  //Сброс значений при рестарте игры
+  function restartGame() {
+    setTimeout(() => {
+      setStep({
+        playerStep: [],
+        compStep: [Math.floor(Math.random() * 9)],
+      });
+      setStatusGame({
+        winner: null,
+        draw: false,
+      });
+      setTouch(Array(9).fill(false));
+    }, 300);
+  }
+  /*Наверное глупое решение прибегать к async-await с целью создания искуственной
+  задержки между воспроизведением анимации элементов обновляемые в одном стейте*/
+  function sleep() {
+    return new Promise((resolve) => setTimeout(resolve, 200));
   }
 
-  function setValue(e: React.MouseEvent<HTMLDivElement>) {
+  async function startGame() {
+    setShowGame(true);
+
+    setStep((prev) => ({
+      playerStep: [...prev.playerStep],
+      compStep: [...prev.compStep, Math.floor(Math.random() * 9)], //
+    }));
+
+    isTouch.map((val, index) => (index === step.compStep[0] ? true : val));
+  }
+
+  async function setValue(e: React.MouseEvent<HTMLDivElement>) {
     const id = +e.currentTarget.id;
+    //Анимация карточки
+    await sleep();
+    setTouch(isTouch.map((val, index) => (index === id ? true : val)));
 
     if (!step.playerStep.includes(id) && !step.compStep.includes(id)) {
       const playerStep = step.playerStep.concat(id);
       const compStep = step.compStep;
       const allStep = [...playerStep, ...compStep];
+      await sleep();
       const logicStep = machineStep(playerStep, compStep, allStep);
 
       setStatusGame({ ...logicStep.statusGame });
-      console.log(logicStep);
-      // setStep({ playerStep: step.playerStep.concat(id), compStep: [id] });
+
+      setTouch(
+        isTouch.map((val, index) => (index === logicStep.step ? true : val))
+      );
       setStep((prev) => ({
         playerStep: [...prev.playerStep, id],
         compStep: [...prev.compStep, logicStep.step],
@@ -105,13 +131,30 @@ const HomePage = () => {
         >
           {(statusGame.winner !== null || statusGame.draw) && (
             <Reload>
-              <Fab
-                color="secondary"
-                sx={{ height: "100px", width: "100px", opacity: "0.9" }}
-                aria-label="replay"
-              >
-                <Replay fontSize="large" />
-              </Fab>
+              <Fade in={true}>
+                <Typography
+                  sx={{ marginTop: 1 }}
+                  color="secondary"
+                  variant="h3"
+                >
+                  {statusGame.winner !== null ? "Победа!" : "Ничья!"}
+                </Typography>
+              </Fade>
+              <Fade in={true}>
+                <Fab
+                  color="secondary"
+                  sx={{
+                    marginTop: 15,
+                    height: "100px",
+                    width: "100px",
+                    opacity: "0.7",
+                  }}
+                  onClick={() => restartGame()}
+                  aria-label="replay"
+                >
+                  <Replay fontSize="large" />
+                </Fab>
+              </Fade>
             </Reload>
           )}
           {/* Скачет разметка */}
@@ -125,7 +168,7 @@ const HomePage = () => {
                       width: "140px",
                       height: "140px",
                     }}
-                    $isTouched={touch}
+                    $isTouched={isTouch[index]}
                     onClick={(e) => setValue(e)}
                     elevation={8}
                     id={`${index}`}
