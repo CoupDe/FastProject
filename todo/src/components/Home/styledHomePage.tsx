@@ -1,6 +1,8 @@
 import { Box, Paper } from "@mui/material";
 import { default as MyGrid } from "@mui/material/Unstable_Grid2";
 import styled, { keyframes } from "styled-components";
+import CloseIcon from "@mui/icons-material/Close";
+
 const slidein = keyframes`
   0% {
     transform: translateZ(-1400px);
@@ -23,14 +25,10 @@ const hoverAnimation = keyframes`
   }`;
 
 const flipCard = keyframes` 0% {
-  transform: rotateX(0);
-  
+  transform: rotateY(0);
 }
 100% {
- 
-  transform: rotateX(-180deg);  
-  box-shadow:none
-  
+  transform: rotateY(-180deg);  
 }
 }`;
 interface ICardProps {
@@ -42,20 +40,22 @@ export const StyledGrid = styled(MyGrid)`
   &:hover {
     /* animation: ${hoverAnimation} 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94)
       forwards; */
+    animation: ${slidein} 0.6s ease-in both;
+    animation-iteration-count: 1;
     transform: scale(1.1);
   }
 `;
+
 
 export const MyItem = styled(Paper)<ICardProps>`
   display: flex;
   justify-self: center;
   justify-content: center;
-  animation: ${slidein} 0.6s ease-in both;
+
+  animation: ${(props) => props.$isTouched && flipCard} 0.2s 0.8
+    cubic-bezier(0.455, 0.03, 0.515, 0.955) both;
   &:hover {
     cursor: pointer;
-
-    animation: ${(props) => props.$isTouched && flipCard} 0.4s
-      cubic-bezier(0.455, 0.03, 0.515, 0.955) both;
   }
 `;
 export const Reload = styled(Box)`
@@ -64,9 +64,10 @@ export const Reload = styled(Box)`
   left: 0;
   width: 100%;
   height: 100%;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
   display: flex;
+  flex-direction: column;
   z-index: 10;
   background-color: #fff1;
   transition: background-color 0.2s ease-in-out;

@@ -1,12 +1,15 @@
-import { Box, Typography } from "@mui/material";
-import React from "react";
+import { Box, Button, Typography } from "@mui/material";
+import { motion } from "framer-motion";
+import React, { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
-import HomePage from "../components/Home/HomePage";
-interface LoginLayoutProps {
-  children?: React.ReactNode;
-}
+import { LinkButton } from "./StyledLinkButton";
 
 const LoginLayout = () => {
+  const [showProjectLink, setShowProjectLink] = useState<boolean>(false);
+  useEffect(() => {
+    console.log(showProjectLink);
+  }, [showProjectLink]);
+
   return (
     <>
       <main>
@@ -22,6 +25,29 @@ const LoginLayout = () => {
           }}
           component="section"
         >
+          {/* {showProjectLink && <LinkButton variant="outlined">Tru</LinkButton>} */}
+          <Box sx={{ alignSelf: "flex-end", paddingRight: 5 }}>
+            <motion.div
+              animate={{
+                y: 60,
+                scale: [0, 2],
+
+                borderRadius: ["20%", "20%", "100%", "50%", "20%"],
+                rotate: 10,
+              }}
+              transition={{
+                delay: 1,
+                type: "spring",
+                duration: 2,
+                bounce: 0.7,
+               
+              }}
+            >
+              <Button component={motion.div} variant="outlined">
+                Tru
+              </Button>
+            </motion.div>
+          </Box>
           <Typography
             letterSpacing={"3px"}
             mb={"40px"}
@@ -37,7 +63,7 @@ const LoginLayout = () => {
             </Box>
           </Typography>
 
-          <Outlet />
+          <Outlet context={setShowProjectLink} />
         </Box>
       </main>
     </>

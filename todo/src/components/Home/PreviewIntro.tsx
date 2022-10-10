@@ -3,8 +3,14 @@ import Avatar from "@mui/material/Avatar";
 import { useState } from "react";
 import { TypeAnimation } from "react-type-animation";
 import photo from "../../images/photo/photo.jpg";
+import { useOutletContext } from "react-router-dom";
 
 const PreviewIntro: React.FC<{ startGame: Function }> = ({ startGame }) => {
+  const setShowProjectLink =
+    useOutletContext<React.Dispatch<React.SetStateAction<boolean>>>();
+
+  console.log(setShowProjectLink);
+
   return (
     <Box
       sx={{
@@ -31,15 +37,15 @@ const PreviewIntro: React.FC<{ startGame: Function }> = ({ startGame }) => {
       {/* сделать выравнивание текста слева */}
       <TypeAnimation
         sequence={[
-          "Lorem ipsum — классический текст-«рыба». Является искажённым отрывком из философского трактата Марка Туллия Цицерона «О пределах добра и зла», написанного в 45 году до н. э. на латинском языке/",
-          1000,
+          "Добро пожаловать в мой 'мини' Pet-проект котрый является класический TODO-list, за исключением того что он представляет из себя полноценное приложение в котором реализованно взаимодействие клиента с сервером, Front-end и backend написан полность мной. А перед тем, как я вам немного расскажу про используемые технологии, предлогаю вам вспомнить школьную игру,",
+          1500,
           () => {
             startGame();
           },
-          "Lorem ipsum — классический текст-«рыба». Является искажённым отрывком из философского трактата Марка Туллия Цицерона «О пределах добра и зла», написанного в 45 году до н. э. на латинском языке обнаружение сходства приписывается Ричарду Макклинтоку.",
+          "Добро пожаловать в мой 'мини' Pet-проект котрый является класический TODO-list, за исключением того что он представляет из себя полноценное приложение в котором реализованно взаимодействие клиента с сервером, Front-end и backend написан полность мной. А перед тем, как я вам немного расскажу про используемые технологии, предлогаю вам вспомнить школьную игру, ну или присупить сразу к просмотру проекта",
           1000,
           () => {
-            console.log("END TEXT");
+            setShowProjectLink(true);
           },
         ]}
         speed={99}

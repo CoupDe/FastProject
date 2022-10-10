@@ -20,10 +20,10 @@ interface IGame {
 }
 const win = (combination: number[][], step: number[]): number[] | null => {
   let ss: number[] = [];
+
   for (let i of combination) {
     ss = _.difference(i, step);
     if (ss.length === 0) {
-      console.log(i);
       return i;
     }
   }
@@ -89,7 +89,6 @@ const isDrawGame = (
   const fullComb = [...compCombination, ...playerCombination];
 
   if (fullComb.length === 1 && allStep.length + 1 === 7) {
-    console.log("DRAW");
     return true;
   } else if (fullComb.length === 0) {
     return true;
@@ -102,8 +101,6 @@ export const machineStep = (
   compStep: number[],
   allStep: number[]
 ): IGame => {
-  //Проверка на крайнюю комбинацию
-
   //Взвращает возможные победные комбинации игрока
   const playerCombination = getWinCombination(playerStep);
   //Возвращает возможные победные комбинации компьютера
@@ -125,14 +122,14 @@ export const machineStep = (
   ]);
   //Победная комбинация
   const winGame =
-    win(playerCombination, playerStep) || win(compCombination, update);
-  //Ничья
-  const drawGame = isDrawGame(
-    filterCombComp,
-    filterCombPlayer,
+    win(playerCombination, playerStep) ||
+    win(compCombination, [
+      ...compStep,
+      getStep(filterCombComp, compStep, warning),
+    ]);
 
-    allStep
-  );
+  //Ничья
+  const drawGame = isDrawGame(filterCombComp, filterCombPlayer, allStep);
 
   return {
     step: getStep(filterCombComp, compStep, warning),
