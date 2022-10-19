@@ -3,12 +3,12 @@ import CloseIcon from "@mui/icons-material/Close";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import { Box, Fab, Fade, Typography } from "@mui/material";
 import { default as MyGrid } from "@mui/material/Unstable_Grid2"; // Grid version 2
-import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { useState } from "react";
 import { machineStep } from "../../services/gameLogic/gameLogic";
 import { IGameStep, IStatusGame } from "../../typeinterfaces/types";
 import PreviewIntro from "./PreviewIntro";
 import { MyItem, Reload, StyledGrid } from "./styledHomePage";
-
 const HomePage = () => {
   const [showGame, setShowGame] = useState<boolean>(false);
 
@@ -16,7 +16,7 @@ const HomePage = () => {
     winner: null,
     draw: false,
   });
- 
+
   const [isTouch, setTouch] = useState<boolean[]>(Array(9).fill(false));
 
   const [step, setStep] = useState<IGameStep>({
@@ -24,9 +24,6 @@ const HomePage = () => {
     playerStep: [],
   });
 
-  useEffect(() => {
-    console.log("USEeFFECT", isTouch);
-  }, [isTouch]);
   //Сброс значений при рестарте игры
   function restartGame() {
     setTimeout(() => {
@@ -42,7 +39,7 @@ const HomePage = () => {
     }, 300);
   }
   /*Наверное глупое решение прибегать к async-await с целью создания искуственной
-  задержки между воспроизведением анимации элементов обновляемые в одном стейте*/
+  задержки между воспроизведением анимации и элементов обновляемые в одном стейте*/
   function sleep() {
     return new Promise((resolve) => setTimeout(resolve, 200));
   }
@@ -57,10 +54,10 @@ const HomePage = () => {
 
     isTouch.map((val, index) => (index === step.compStep[0] ? true : val));
   }
-
+  //Анимация карточки
   async function setValue(e: React.MouseEvent<HTMLDivElement>) {
     const id = +e.currentTarget.id;
-    //Анимация карточки
+
     await sleep();
     setTouch(isTouch.map((val, index) => (index === id ? true : val)));
 
@@ -105,10 +102,10 @@ const HomePage = () => {
 
   return (
     <>
+      {/* Применения px ???? */}
       <Box
         sx={{
-          bgcolor: "#fff5",
-          width: "100%",
+          width: "1152px",
           height: "80vh",
           display: "flex",
 
@@ -117,7 +114,12 @@ const HomePage = () => {
         }}
         aria-label="intro"
       >
+        {/* Настроить задержку */}
         <MyGrid
+          component={motion.div}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 3 }}
           container
           spacing={2}
           columns={12}
@@ -157,6 +159,7 @@ const HomePage = () => {
               </Fade>
             </Reload>
           )}
+
           {/* Скачет разметка */}
           {showGame &&
             Array.from(Array(9)).map((_, index) => {
@@ -179,6 +182,7 @@ const HomePage = () => {
               );
             })}
         </MyGrid>
+
         <PreviewIntro startGame={startGame} />
       </Box>
     </>

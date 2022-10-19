@@ -9,8 +9,6 @@ const PreviewIntro: React.FC<{ startGame: Function }> = ({ startGame }) => {
   const setShowProjectLink =
     useOutletContext<React.Dispatch<React.SetStateAction<boolean>>>();
 
-  console.log(setShowProjectLink);
-
   return (
     <Box
       sx={{
@@ -19,40 +17,45 @@ const PreviewIntro: React.FC<{ startGame: Function }> = ({ startGame }) => {
         alignSelf: "start",
         justifyContent: "center",
         flexDirection: "column",
-        alignItems: "center",
+
         marginX: "4px",
       }}
+      aria-label="introText"
     >
-      <Avatar
-        sx={{
-          marginY: "4px",
-          width: "100px",
-          height: "100px",
-
-          justifyContent: "center",
-        }}
-        alt="Portfolio_photo"
-        src={photo}
-      />
+      <Box sx={{ display: "flex", flexGrow: 1 }}>
+        <Avatar
+          sx={{
+            marginY: "4px",
+            width: "100px",
+            height: "100px",
+            margin: "0 auto",
+            alignSelf: "center",
+          }}
+          alt="Portfolio_photo"
+          src={photo}
+        />
+      </Box>
       {/* сделать выравнивание текста слева */}
-      <TypeAnimation
-        sequence={[
-          "Добро пожаловать в мой 'мини' Pet-проект котрый является класический TODO-list, за исключением того что он представляет из себя полноценное приложение в котором реализованно взаимодействие клиента с сервером, Front-end и backend написан полность мной. А перед тем, как я вам немного расскажу про используемые технологии, предлогаю вам вспомнить школьную игру,",
-          1500,
-          () => {
-            startGame();
-          },
-          "Добро пожаловать в мой 'мини' Pet-проект котрый является класический TODO-list, за исключением того что он представляет из себя полноценное приложение в котором реализованно взаимодействие клиента с сервером, Front-end и backend написан полность мной. А перед тем, как я вам немного расскажу про используемые технологии, предлогаю вам вспомнить школьную игру, ну или присупить сразу к просмотру проекта",
-          1000,
-          () => {
-            setShowProjectLink(true);
-          },
-        ]}
-        speed={99}
-        style={{ fontSize: "1.5em", font: "Arial" }}
-        wrapper="p"
-        repeat={0}
-      />
+      <Box sx={{ minWidth: "500px" }}>
+        <TypeAnimation
+          sequence={[
+            "Добро пожаловать в мой 'мини' Pet-проект котрый является класический TODO-list, за исключением того что он представляет из себя полноценное приложение в котором реализованно взаимодействие клиента с сервером, Front-end и backend написан полность мной. А перед тем, как я вам немного расскажу про используемые технологии, предлогаю вам вспомнить школьную игру,",
+            500,
+            () => {
+              startGame();
+            },
+            "Добро пожаловать в мой 'мини' Pet-проект котрый является класический TODO-list, за исключением того что он представляет из себя полноценное приложение в котором реализованно взаимодействие клиента с сервером, Front-end и backend написан полность мной. А перед тем, как я вам немного расскажу про используемые технологии, предлогаю вам вспомнить школьную игру, ну или присупить сразу к просмотру проекта",
+            1000,
+            () => {
+              setShowProjectLink(true);
+            },
+          ]}
+          speed={99}
+          style={{ fontSize: "1.1em", font: "Arial", textIndent: "25px" }}
+          wrapper="p"
+          repeat={0}
+        />
+      </Box>
     </Box>
   );
 };

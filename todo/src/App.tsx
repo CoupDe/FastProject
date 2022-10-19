@@ -1,12 +1,13 @@
-import { Container, CssBaseline } from "@mui/material";
-import { ThemeProvider as MuiThemeProvider } from "@mui/material/styles";
+import { Container, CssBaseline, Typography } from "@mui/material";
+import {
+  StyledEngineProvider,
+  ThemeProvider as MuiThemeProvider,
+} from "@mui/material/styles";
+import { motion, AnimatePresence } from "framer-motion";
 import { createContext } from "react";
-import { Route, Routes } from "react-router-dom";
-import HomePage from "./components/Home/HomePage";
-import LoginPage from "./components/login/LoginPage";
-import LoginLayout from "./Layout/LoginLayout";
+import { RouterProvider } from "react-router";
+import { router } from "./routes/router";
 import { BackgroundBox } from "./StyledApp";
-import { StyledEngineProvider } from "@mui/material/styles";
 import ChangeColorTheme from "./theme/theme";
 import ColorThemeButton from "./ui/ColorThemeButton";
 
@@ -24,12 +25,9 @@ function App() {
             <CssBaseline>
               <BackgroundBox themeColor={theme.palette.mode}>
                 <Container>
-                  <Routes>
-                    <Route element={<LoginLayout />}>
-                      <Route index element={<HomePage />} />
-                      <Route path="/login" element={<LoginPage />} />
-                    </Route>
-                  </Routes>
+                  <AnimatePresence mode="wait">
+                    <RouterProvider router={router} />
+                  </AnimatePresence>
                 </Container>
                 <ColorThemeButton />
               </BackgroundBox>
