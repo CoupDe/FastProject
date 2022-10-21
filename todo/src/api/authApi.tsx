@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import endpoints from "../const/endpoints";
+import { authErrorHandler } from "../services/errorHandlers/authErrors";
 import { authConvertData } from "../services/parseData/authUserConverter";
 import { authUserToken } from "../slices/authSlice";
 import { RootState } from "../slices/store";
@@ -17,7 +18,7 @@ export const authApi = createApi({
     baseUrl: `${endpoints.BASE}users/`,
     prepareHeaders: (headers, { getState }) => {
       const token = (getState() as RootState).authSlice.token?.access; //Метод getstate() получает доступ к стору, дальше получается
-      //токен, если он естьб ЧТО ТАКОЕ ROOTSTATE?
+      //Если есть токен
       if (token) {
         headers.set("Authorization", `Bearer ${token}`);
         console.log(headers.get("Authorization"));
@@ -35,7 +36,7 @@ export const authApi = createApi({
 
     signIn: builder.mutation<IUserAuth, IAuthRequest>({
       query: (data: IAuthRequest) => {
-        console.log("query", data);
+        console.log("requestMy", data);
         return {
           url: endpoints.AUTH.TOKEN,
           method: "POST",
@@ -49,7 +50,7 @@ export const authApi = createApi({
         //можно ли трансформировать интерфейс на основе 2х других с вложением,
         //?Почему есди из Бэкэнда не передать поле username возникает ошибка, предположительно в этом месте
         //?Почему в интерфейсы установлены обязательные поля с типом string но может передаться из бэкэнда undefined
-
+        //Неправильная конструкция
         try {
           authConvertData(response);
         } catch (err) {
@@ -59,7 +60,7 @@ export const authApi = createApi({
 
         return myResponse;
       },
-      //Данная функция представляет возможность допю функционала до запроса и после запроса
+      //Данная функция представляет возможность доп. функционала до запроса и после запроса
       async onQueryStarted(args, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled; //response
@@ -67,7 +68,9 @@ export const authApi = createApi({
           if (data.token) {
             dispatch(authUserToken(data));
           }
-        } catch (err) {}
+        } catch (err) {
+          console.log(err);
+        }
       },
     }),
   }),

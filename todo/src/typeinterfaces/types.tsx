@@ -47,18 +47,24 @@ export interface ITask {
 }
 
 //***************ERROR TYPES & INTERFACE***************
+export interface ICustomError {
+  data: { detail: string[] };
+  status: number;
+}
 export interface IError {
-  detail?: string[];
+  detail: string;
+  status?: number | string;
 }
 
 export interface IAuthFormError {
-  status: any;
+  status?: string | number;
   data?: unknown;
+  error?: string;
 }
 
 export interface IStatusProps {
   isError: boolean;
-  errorMessage: string;
+  errorMessage: IError;
   isSuccess: boolean;
   isLoading: boolean;
   first_name: string;

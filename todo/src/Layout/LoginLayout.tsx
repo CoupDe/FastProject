@@ -125,9 +125,19 @@ const LoginLayout = () => {
               шник
             </Box>
           </Typography>
-          <AnimationOutlet>
-            <Outlet context={setShowProjectLink} />
-          </AnimationOutlet>
+          <Box
+            sx={{
+              paddingTop: "20px",
+              display: "flex",
+              height: "80vh",
+              alignItems: "center",
+            }}
+            aria-label="MiddleLayout"
+          >
+            <AnimationOutlet>
+              <Outlet context={setShowProjectLink} />
+            </AnimationOutlet>
+          </Box>
         </Box>
       </main>
     </>

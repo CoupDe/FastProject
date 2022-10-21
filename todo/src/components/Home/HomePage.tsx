@@ -102,15 +102,14 @@ const HomePage = () => {
 
   return (
     <>
-      {/* Применения px ???? */}
+      {/* Применение px ???? */}
       <Box
         sx={{
           width: "1152px",
-          height: "80vh",
-          display: "flex",
 
-          justifyContent: "space-between",
+          display: "flex",
           alignItems: "center",
+          justifyContent: "space-between",
         }}
         aria-label="intro"
       >

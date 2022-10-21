@@ -11,32 +11,37 @@ import {
   InputLabel,
   Link,
   Paper,
-  Stack
+  Stack,
 } from "@mui/material";
+
 import { Formik } from "formik";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useSignInMutation } from "../../api/authApi";
 import {
   authErrorHandler,
-  isFetchBaseQueryError
+  isFetchBaseQueryError,
 } from "../../services/errorHandlers/authErrors";
 // import { AuthErrorData } from "../../services/errorHandlers/authErrors";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   IAuthFormValuesByToken,
-  IStatusAuthInfo
+  IError,
+  IStatusAuthInfo,
 } from "../../typeinterfaces/types";
 import { signInSchema } from "../../validation/signInFormValidation";
 import {
   StyledFieldBox,
   StyledFormControl,
   StyledGitHubIcon,
-  StyledInstagramIcon
+  StyledInstagramIcon,
 } from "./styledAuthForm";
 
 import { getStatus } from "../../services/errorHandlers/statusBarAuth";
 import { statusAuth } from "../../slices/authSlice";
+import { RootState } from "../../slices/store";
 import StatusAuthBar from "./StatusAuthBar";
+import { redirect } from "react-router";
 
 const initialValuesToken: IAuthFormValuesByToken = {
   login_field: "",
@@ -62,15 +67,17 @@ const LoginPage = () => {
   const [tokenAuth, { data, error: authError, isSuccess, isError, isLoading }] =
     useSignInMutation();
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
+  const { isAuth } = useSelector((state: RootState) => state.authSlice);
   // Выглядит нагроможденно, вероятно надо переписать
   // Сам эффект выполняет роль диспатча обработанных данных через 'хелпер' getStatus
   // Обработка заключается в приведении в более читаемый формат
   useEffect(() => {
-    let errorMessage: string = "";
+    let errorMessage: IError = { detail: "", status: "" };
+
     if (authError) {
       if (isFetchBaseQueryError(authError)) {
-        errorMessage = authErrorHandler(authError!) as string;
+        errorMessage = authErrorHandler(authError);
       }
     }
 
@@ -86,7 +93,21 @@ const LoginPage = () => {
         })
       )
     );
-  }, [data, authError, isError, isSuccess, isLoading, dispatch]);
+    if (isAuth) {
+      setTimeout(() => {
+        navigate("/todo");
+      }, 500);
+    }
+  }, [
+    data,
+    authError,
+    isError,
+    isSuccess,
+    isLoading,
+    dispatch,
+    isAuth,
+    navigate,
+  ]);
 
   return (
     <Paper
@@ -111,7 +132,7 @@ const LoginPage = () => {
           sx={{ fontSize: "70px", margin: "30px auto 0 auto" }}
         />
       )}
-      <Box sx={{ margin: "0 auto" }}>
+      <Box sx={{ margin: "0 auto", height: "15px" }}>
         <StatusAuthBar {...statusInfo} />
       </Box>
       <Formik
@@ -190,7 +211,6 @@ const LoginPage = () => {
         )}
       </Formik>
       <Box
-        component="section"
         aria-label="social"
         sx={{
           display: "flex",

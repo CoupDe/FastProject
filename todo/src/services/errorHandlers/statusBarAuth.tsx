@@ -16,7 +16,7 @@ export function getStatus({
   } else if (isError) {
     authStatus.authLogInfo = {
       status: "error" as const,
-      payloadInfo: errorMessage,
+      payloadInfo: errorMessage.detail,
     };
     return authStatus;
   } else if (isSuccess) {
