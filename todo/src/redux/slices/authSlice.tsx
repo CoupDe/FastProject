@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IStatusAuthInfo, IUserAuth } from "../typeinterfaces/types";
+import { IUserAuth, IStatusAuthInfo } from "../../typeinterfaces/types";
+
 
 const initialState: IUserAuth & IStatusAuthInfo = {
   token: { access: "", refresh: "" },

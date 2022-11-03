@@ -1,7 +1,8 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { Navigate, useLocation } from "react-router";
-import { RootState } from "../slices/store";
+import { RootState } from "../redux/store";
+
 
 type Props = { children: JSX.Element };
 

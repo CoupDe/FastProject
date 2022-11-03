@@ -1,9 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { authApi } from "../api/authApi";
-import authSlice from "./authSlice";
+import { taskApi } from "./api/taskApi";
+import { authApi } from "./api/authApi";
 
-import { taskApi } from "./taskApiSlice";
-import viewTaskSlice from "./ViewSlice";
+import authSlice from "./slices/authSlice";
+import viewTaskSlice from "./slices/viewSlice";
 
 export const store = configureStore({
   devTools: process.env.NODE_ENV !== "production", //Автоматически вычисляет включен ли DEVTOOLS у клиента или нет

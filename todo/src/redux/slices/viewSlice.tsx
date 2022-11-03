@@ -1,5 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IFilteredQuerys, ISortedQuerys } from "../typeinterfaces/types";
+import { ISortedQuerys, IFilteredQuerys } from "../../typeinterfaces/types";
+
+
 const initialState: ISortedQuerys & IFilteredQuerys = {
   filterValues: [],
   sortedQuery: "created",

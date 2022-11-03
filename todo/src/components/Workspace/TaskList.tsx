@@ -1,5 +1,5 @@
-import { Paper } from "@mui/material";
-import { useGetUsersQuery } from "../../api/authApi";
+import { useGetUsersQuery } from "../../redux/api/authApi";
+
 
 const TaskList = () => {
   const { data: usersList } = useGetUsersQuery();

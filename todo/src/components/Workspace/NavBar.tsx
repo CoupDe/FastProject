@@ -8,10 +8,13 @@ import {
   Radio,
   RadioGroup,
   Typography,
-  useTheme,
+  useTheme
 } from "@mui/material";
+
 import { useAppDispatch } from "../../hook/hook";
-import { getSortedValue } from "../../slices/ViewSlice";
+import { getSortedValue } from "../../redux/slices/viewSlice";
+
+
 import SelectDepartament from "./SelectDepartament";
 
 const NavBar = () => {

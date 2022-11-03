@@ -2,9 +2,11 @@ import { useTheme } from "@emotion/react";
 import { Typography } from "@mui/material";
 import React from "react";
 import { useSelector } from "react-redux";
+
 import SyncLoader from "react-spinners/SyncLoader";
-import { RootState } from "../../slices/store";
+import { RootState } from "../../redux/store";
 import { IStatusAuthInfo } from "../../typeinterfaces/types";
+
 // Компонент возвращает JSX со статусом логирования
 const StatusAuthBar: React.FC<IStatusAuthInfo> = (): JSX.Element => {
   const { status, payloadInfo } = useSelector(

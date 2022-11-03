@@ -1,16 +1,13 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import endpoints from "../const/endpoints";
-import { authErrorHandler } from "../services/errorHandlers/authErrors";
-import { authConvertData } from "../services/parseData/authUserConverter";
-import { authUserToken } from "../slices/authSlice";
-import { RootState } from "../slices/store";
 
-import {
-  IAuthRequest,
-  IUser,
-  IUserAuth,
-  UserFetchData,
-} from "../typeinterfaces/types";
+import { authUserToken } from "../slices/authSlice";
+
+
+
+import endpoints from "../../const/endpoints";
+import { authConvertData } from "../../services/parseData/authUserConverter";
+import { RootState } from "../store";
+import { IUser, IUserAuth, IAuthRequest, UserFetchData } from "../../typeinterfaces/types";
 
 export const authApi = createApi({
   reducerPath: "authApi",
@@ -64,7 +61,7 @@ export const authApi = createApi({
       async onQueryStarted(args, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled; //response
-          console.log("RESPONSE DATA ONQUERY", data);
+
           if (data.token) {
             dispatch(authUserToken(data));
           }

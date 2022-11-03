@@ -1,5 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { ITask } from "../typeinterfaces/types";
+import { ITask } from "../../typeinterfaces/types";
+import endpoints from "../../const/endpoints";
+
 
 export const taskApi = createApi({
   reducerPath: "taskApi", //Уникальное название среза
@@ -20,3 +22,5 @@ export const taskApi = createApi({
   }),
 });
 export const { useFetchTaskListQuery, useFetchTaskQuery } = taskApi;
+
+
