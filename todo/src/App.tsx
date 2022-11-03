@@ -1,7 +1,7 @@
 import { Container, CssBaseline } from "@mui/material";
 import {
   StyledEngineProvider,
-  ThemeProvider as MuiThemeProvider
+  ThemeProvider as MuiThemeProvider,
 } from "@mui/material/styles";
 import { AnimatePresence } from "framer-motion";
 import { createContext } from "react";
@@ -24,7 +24,7 @@ function App() {
           <MuiThemeProvider theme={theme}>
             <CssBaseline>
               <BackgroundBox themeColor={theme.palette.mode}>
-                <Container>
+                <Container maxWidth={false}>
                   <AnimatePresence mode="wait">
                     <RouterProvider router={router} />
                   </AnimatePresence>

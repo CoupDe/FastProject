@@ -11,7 +11,7 @@ import {
   InputLabel,
   Link,
   Paper,
-  Stack,
+  Stack
 } from "@mui/material";
 
 import { Formik } from "formik";
@@ -20,28 +20,27 @@ import { useNavigate } from "react-router-dom";
 import { useSignInMutation } from "../../api/authApi";
 import {
   authErrorHandler,
-  isFetchBaseQueryError,
+  isFetchBaseQueryError
 } from "../../services/errorHandlers/authErrors";
 // import { AuthErrorData } from "../../services/errorHandlers/authErrors";
 import { useDispatch, useSelector } from "react-redux";
 import {
   IAuthFormValuesByToken,
   IError,
-  IStatusAuthInfo,
+  IStatusAuthInfo
 } from "../../typeinterfaces/types";
 import { signInSchema } from "../../validation/signInFormValidation";
 import {
   StyledFieldBox,
   StyledFormControl,
   StyledGitHubIcon,
-  StyledInstagramIcon,
+  StyledInstagramIcon
 } from "./styledAuthForm";
 
 import { getStatus } from "../../services/errorHandlers/statusBarAuth";
 import { statusAuth } from "../../slices/authSlice";
 import { RootState } from "../../slices/store";
 import StatusAuthBar from "./StatusAuthBar";
-import { redirect } from "react-router";
 
 const initialValuesToken: IAuthFormValuesByToken = {
   login_field: "",

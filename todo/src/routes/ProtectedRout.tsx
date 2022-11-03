@@ -7,9 +7,9 @@ type Props = { children: JSX.Element };
 
 const ProtectedRout: React.FC<Props> = ({ children }) => {
   let location = useLocation(); //Для возврата на страницу из которой был выход
-  console.log(location);
+
   const { isAuth } = useSelector((state: RootState) => state.authSlice);
-  console.log(isAuth);
+
   return isAuth ? (
     <div>{children}</div>
   ) : (

@@ -86,3 +86,11 @@ export interface IStatusGame {
   winner: number[] | null;
   draw: boolean;
 }
+//**********filter & sort types***************
+
+export interface IFilteredQuerys {
+  filterValues: string[];
+}
+export interface ISortedQuerys {
+  sortedQuery: string;
+}
