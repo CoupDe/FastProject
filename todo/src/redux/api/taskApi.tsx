@@ -1,19 +1,18 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { ITask } from "../../typeinterfaces/types";
-import endpoints from "../../const/endpoints";
-
+import ENDPOINTS from "../../const/endpoints";
 
 export const taskApi = createApi({
   reducerPath: "taskApi", //Уникальное название среза
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://127.0.0.1:8000/api/v1",
+    baseUrl: ENDPOINTS.baseApi,
   }), //Базовый url для запроса
   endpoints: (build) => ({
     //функция возвращающая некоторый объект //название метода  и запрос
     //build.query --> получение build.mutation --> CRUD
     fetchTaskList: build.query<ITask[], void>({
       query: () => ({
-        url: "/tasklist/",
+        url: ENDPOINTS.TASK.TASKLIST,
       }),
     }),
     //                Ожидаемый тип
@@ -22,5 +21,3 @@ export const taskApi = createApi({
   }),
 });
 export const { useFetchTaskListQuery, useFetchTaskQuery } = taskApi;
-
-

@@ -1,13 +1,14 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
 import { authUserToken } from "../slices/authSlice";
-
-
-
 import endpoints from "../../const/endpoints";
 import { authConvertData } from "../../services/parseData/authUserConverter";
 import { RootState } from "../store";
-import { IUser, IUserAuth, IAuthRequest, UserFetchData } from "../../typeinterfaces/types";
+import {
+  IUser,
+  IUserAuth,
+  IAuthRequest,
+  UserFetchData,
+} from "../../typeinterfaces/types";
 
 export const authApi = createApi({
   reducerPath: "authApi",

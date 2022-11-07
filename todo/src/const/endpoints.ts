@@ -1,4 +1,5 @@
-const endpoints = {
+const ENDPOINTS = {
+  VERSIONAPI: "v1/",
   BASE: "http://127.0.0.1:8000/",
   AUTH: {
     LOGIN: "login/",
@@ -7,10 +8,12 @@ const endpoints = {
     LOGOUT: "logout/",
     TOKEN: "token/",
   },
-  TASK:{
-    http://127.0.0.1:8000/api
-  }
- 
+  get baseApi() {
+    return this.BASE + "api/" + this.VERSIONAPI;
+  },
+  TASK: {
+    TASKLIST: "/tasklist/",
+  },
 };
 
-export default endpoints;
+export default ENDPOINTS;

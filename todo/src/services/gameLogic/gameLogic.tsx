@@ -62,7 +62,6 @@ const getStep = (
   }
   //Выбор шага в зависимости от крайнего хода компьютера
   if (warning) {
-    console.log("warning", warning);
     result = warningStep(combination, stepComp) || warning;
   }
   if (result === undefined) result = 22; //Ничья
