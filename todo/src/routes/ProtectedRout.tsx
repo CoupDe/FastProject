@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import { Navigate, useLocation } from "react-router";
 import { RootState } from "../redux/store";
 
-
 type Props = { children: JSX.Element };
 
 const ProtectedRout: React.FC<Props> = ({ children }) => {

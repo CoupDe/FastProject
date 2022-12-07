@@ -1,10 +1,10 @@
 import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
-
+import { setupListeners } from "@reduxjs/toolkit/dist/query/react";
 import App from "./App";
 import "./index.css";
 import { store } from "./redux/store";
-
+setupListeners(store.dispatch); //Необходимо установить слушатель для реализации refetch при реконнекте или переключении окна браузера
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );

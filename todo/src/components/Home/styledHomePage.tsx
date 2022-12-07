@@ -1,7 +1,6 @@
 import { Box, Paper } from "@mui/material";
 import { default as MyGrid } from "@mui/material/Unstable_Grid2";
 import styled, { keyframes } from "styled-components";
-import CloseIcon from "@mui/icons-material/Close";
 
 const slidein = keyframes`
   0% {

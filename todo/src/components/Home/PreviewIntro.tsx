@@ -1,9 +1,8 @@
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
-import { useState } from "react";
+import { useOutletContext } from "react-router-dom";
 import { TypeAnimation } from "react-type-animation";
 import photo from "../../images/photo/photo.jpg";
-import { useOutletContext } from "react-router-dom";
 
 const PreviewIntro: React.FC<{ startGame: Function }> = ({ startGame }) => {
   const setShowProjectLink =

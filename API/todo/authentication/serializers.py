@@ -18,6 +18,8 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
             read_only=True)
         self.fields['first_name'] = serializers.CharField(
             read_only=True)
+        self.fields['id'] = serializers.CharField(
+            read_only=True)
 
     email = serializers.EmailField(
         max_length=255, read_only=True)
@@ -60,6 +62,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
             dataRequest['access'] = str(refresh.access_token)
             dataRequest['refresh'] = str(refresh)
             dataRequest['first_name'] = user.first_name
+            dataRequest['id'] = user.pk
 
         if user is None:
             raise serializers.ValidationError(
@@ -118,52 +121,52 @@ class RegisterUserSerializer(serializers.ModelSerializer):
 # Сериализатор аутентификации
 
 
-class LoginSerializer(serializers.Serializer):
+# class LoginSerializer(serializers.Serializer):
 
-    # required - не обязательное поле для заполнения
-    login_field = serializers.CharField(max_length=255, required=False)
-    email = serializers.EmailField(max_length=255, read_only=True)
-    username = serializers.CharField(max_length=255, read_only=True)
-    password = serializers.CharField(max_length=128,
-                                     min_length=8,
-                                     write_only=True)
-    token = serializers.CharField(max_length=255, read_only=True)
+#     # required - не обязательное поле для заполнения
+#     login_field = serializers.CharField(max_length=255, required=False)
+#     email = serializers.EmailField(max_length=255, read_only=True)
+#     username = serializers.CharField(max_length=255, read_only=True)
+#     password = serializers.CharField(max_length=128,
+#                                      min_length=8,
+#                                      write_only=True)
+#     token = serializers.CharField(max_length=255, read_only=True)
 
-    def validate(self, data):
+#     def validate(self, data):
 
-        # В методе validate мы убеждаемся, что текущий экземпляр
-        # LoginSerializer значение valid. В случае входа пользователя в систему
-        # это означает подтверждение того, что присутствуют адрес электронной
-        # почты и то, что эта комбинация соответствует одному из пользователей.
-        login_field = data.get('login_field', None)
+#         # В методе validate мы убеждаемся, что текущий экземпляр
+#         # LoginSerializer значение valid. В случае входа пользователя в систему
+#         # это означает подтверждение того, что присутствуют адрес электронной
+#         # почты и то, что эта комбинация соответствует одному из пользователей.
+#         login_field = data.get('login_field', None)
 
-        password = data.get('password', None)
+#         password = data.get('password', None)
 
-        if not login_field:
-            # для передачи вывода данного exception необходимо во view вызвать параметр is_valid(raise_exception=True)
-            raise serializers.ValidationError(
-                {'detail': 'Необходимо указать эл.почту или имя пользователя'})
+#         if not login_field:
+#             # для передачи вывода данного exception необходимо во view вызвать параметр is_valid(raise_exception=True)
+#             raise serializers.ValidationError(
+#                 {'detail': 'Необходимо указать эл.почту или имя пользователя'})
 
-        if password is None:
-            raise serializers.ValidationError('Необходимо указать пароль')
+#         if password is None:
+#             raise serializers.ValidationError('Необходимо указать пароль')
 
-        # Для использования кастомного метода authenticate необходимо переопределить BACKEND и прописать в DRF
-        user = authenticate(login_field=login_field, password=password)
-        if user is None:
-            raise serializers.ValidationError(
-                {'detail': 'Пользователь с указанными данными не найден'}
-            )
+#         # Для использования кастомного метода authenticate необходимо переопределить BACKEND и прописать в DRF
+#         user = authenticate(login_field=login_field, password=password)
+#         if user is None:
+#             raise serializers.ValidationError(
+#                 {'detail': 'Пользователь с указанными данными не найден'}
+#             )
 
-        # Django предоставляет флаг is_active для модели User. Его цель
-        # сообщить, был ли пользователь деактивирован или заблокирован.
-        # Проверить стоит, вызвать исключение в случае True.
-        if not user.is_active:
-            raise serializers.ValidationError(
-                {'detail': 'Пользователь заблокирован'}
-            )
+#         # Django предоставляет флаг is_active для модели User. Его цель
+#         # сообщить, был ли пользователь деактивирован или заблокирован.
+#         # Проверить стоит, вызвать исключение в случае True.
+#         if not user.is_active:
+#             raise serializers.ValidationError(
+#                 {'detail': 'Пользователь заблокирован'}
+#             )
 
-        return {
-            'email': user.email,
-            'username': user.username,
-            'token': user.token
-        }
+#         return {
+#             'email': user.email,
+#             'username': user.username,
+#             'token': user.token
+#         }

@@ -1,4 +1,5 @@
 import Paper from "@mui/material/Paper";
+import { motion } from "framer-motion";
 import styled from "styled-components";
 
 export const GridContainer = styled("div")`
@@ -34,8 +35,18 @@ export const NavContainer = styled(Paper)`
 export const MainContainer = styled(Paper)`
   grid-column: 2/12;
   grid-row: 2/3;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-auto-rows: 200px;
+  grid-column-gap: 1em;
+  grid-row-gap: 1em; //???
+  padding: 12px;
   /* grid-column-start: 1;
   grid-column-end: 2;
   grid-row-start: 1;
   grid-row-end: 2; */
+`;
+
+export const MyFoo = styled(motion.div)`
+  background-color: #fff;
 `;

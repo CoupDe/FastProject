@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 
 import { Formik } from "formik";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -24,6 +24,7 @@ import {
 } from "../../services/errorHandlers/authErrors";
 // import { AuthErrorData } from "../../services/errorHandlers/authErrors";
 import { useDispatch, useSelector } from "react-redux";
+import { getStatus } from "../../services/errorHandlers/statusBarAuth";
 import {
   IAuthFormValuesByToken,
   IError,
@@ -37,12 +38,11 @@ import {
   StyledInstagramIcon,
 } from "./styledAuthForm";
 
-import { getStatus } from "../../services/errorHandlers/statusBarAuth";
-
-import StatusAuthBar from "./StatusAuthBar";
-import { useSignInMutation } from "../../redux/api/authApi";
 import { statusAuth } from "../../redux/slices/authSlice";
 import { RootState } from "../../redux/store";
+import StatusAuthBar from "./StatusAuthBar";
+import { useSignInMutation } from "../../redux/slices/authApiSlice";
+import { useFetchTaskListQuery } from "../../redux/slices/taskApiSlice";
 
 const initialValuesToken: IAuthFormValuesByToken = {
   login_field: "",
@@ -65,23 +65,33 @@ const IconLoginField = ({ val }: { val: string }): JSX.Element => {
 };
 
 const LoginPage = () => {
+  const [test, setTest] = useState(true);
   const [tokenAuth, { data, error: authError, isSuccess, isError, isLoading }] =
     useSignInMutation();
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isAuth } = useSelector((state: RootState) => state.authSlice);
+  const { isSuccess: isSuccessTaskList } = useFetchTaskListQuery(undefined, {
+    skip: test,
+  });
+
   // Выглядит нагроможденно, вероятно надо переписать
   // Сам эффект выполняет роль диспатча обработанных данных через 'хелпер' getStatus
   // Обработка заключается в приведении в более читаемый формат
+  // Очень большой эффект
   useEffect(() => {
     let errorMessage: IError = { detail: "", status: "" };
-
+    if (isAuth) {
+      setTest(false);
+    }
+    isSuccessTaskList && navigate("/todo/");
     if (authError) {
       if (isFetchBaseQueryError(authError)) {
         errorMessage = authErrorHandler(authError);
       }
     }
-
+    //Статус ответа о подключении
     const first_name = data?.userinfo.first_name || "";
     dispatch(
       statusAuth(
@@ -94,12 +104,8 @@ const LoginPage = () => {
         })
       )
     );
-    if (isAuth) {
-      setTimeout(() => {
-        navigate("/todo");
-      }, 500);
-    }
   }, [
+    isSuccessTaskList,
     data,
     authError,
     isError,

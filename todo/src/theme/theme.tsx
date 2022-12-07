@@ -1,7 +1,6 @@
-import { Palette } from "@mui/icons-material";
 import { PaletteMode, useMediaQuery } from "@mui/material";
 import { createTheme, Theme } from "@mui/material/styles";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 import { Theme as MuiTheme } from "@mui/material/styles";
 // Необходимо для использования хука useTheme от MUI
@@ -29,7 +28,7 @@ export const colorTheme = (mode: PaletteMode) => ({
           text: {
             primary: "#0a0a0a",
           },
-          divider: "rgba(115,113,113,0.12)",
+          divider: "#737171f8",
         }
       : {
           // palette values for dark mode
@@ -55,7 +54,7 @@ export const colorTheme = (mode: PaletteMode) => ({
 
             secondary: "#ffffff",
           },
-          divider: "rgba(115,113,113,0.12)",
+          divider: "#fff",
         }),
   },
 });
@@ -89,6 +88,7 @@ const themeComponents = (theme: Theme) => ({
       styleOverrides: {
         root: {
           backgroundImage: "none",
+          border: "none",
         },
       },
     },

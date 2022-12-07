@@ -22,8 +22,15 @@ export interface IUserToken {
   refresh: string;
 }
 export interface IUserInfo {
+  userId: string;
   username: string;
   first_name: string;
+}
+
+export interface ICommentRequest {
+  description: string;
+  comment_task: number;
+  comment_creator: number;
 }
 // export type UserFetchData = IUserToken & IUserInfo;
 export interface UserFetchData extends IUserToken, IUserInfo {}
@@ -32,18 +39,19 @@ export interface UserFetchData extends IUserToken, IUserInfo {}
 export interface IUserAuth {
   token: IUserToken | null;
   userinfo: IUserInfo;
-  isAuth?: boolean;
+  isAuth: boolean;
 }
 
 //***************API TASK TYPES & INTERFACE***************
+export type PriorityTask = "AA" | "BB" | "CC";
 export interface ITask {
-  created_at: Date;
-  description: string;
+  created_at: string;
+  short_description: string;
   id: number;
-  importance_task: string;
-  task: string;
+  importance_task: PriorityTask;
+  creator: string;
   isComplete: boolean;
-  updated_at: Date;
+  updated_at: string;
 }
 
 //***************ERROR TYPES & INTERFACE***************
@@ -94,3 +102,6 @@ export interface IFilteredQuerys {
 export interface ISortedQuerys {
   sortedQuery: string;
 }
+////////////////////Guard Types///////////////
+
+export type TrefreshToken = { access: string };

@@ -1,10 +1,16 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ISortedQuerys, IFilteredQuerys } from "../../typeinterfaces/types";
-
-
-const initialState: ISortedQuerys & IFilteredQuerys = {
+import {
+  ISortedQuerys,
+  IFilteredQuerys,
+  ITask,
+} from "../../typeinterfaces/types";
+type Initial = {
+  taskList: ITask[];
+};
+const initialState: ISortedQuerys & IFilteredQuerys & Initial = {
   filterValues: [],
   sortedQuery: "created",
+  taskList: [],
 };
 const viewTaskSlice = createSlice({
   name: "viewTaskSlice",
@@ -18,7 +24,12 @@ const viewTaskSlice = createSlice({
       console.log("action sorted", action.payload);
       state.sortedQuery = action.payload;
     },
+    getTask: (state, action: PayloadAction<ITask[]>) => {
+      // console.log("getTaskSLICE", action.payload);
+      state.taskList = action.payload;
+    },
   },
 });
-export const { getFilterValue, getSortedValue } = viewTaskSlice.actions;
+export const { getFilterValue, getSortedValue, getTask } =
+  viewTaskSlice.actions;
 export default viewTaskSlice;

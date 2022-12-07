@@ -3,6 +3,7 @@ import {
   StyledEngineProvider,
   ThemeProvider as MuiThemeProvider,
 } from "@mui/material/styles";
+
 import { AnimatePresence } from "framer-motion";
 import { createContext } from "react";
 import { RouterProvider } from "react-router";

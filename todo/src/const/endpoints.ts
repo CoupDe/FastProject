@@ -1,18 +1,20 @@
 const ENDPOINTS = {
   VERSIONAPI: "v1/",
   BASE: "http://127.0.0.1:8000/",
-  AUTH: {
-    LOGIN: "login/",
-    REFRESH: "refresh/",
-    AUTH: "auth/",
-    LOGOUT: "logout/",
-    TOKEN: "token/",
+
+  AUTHPATH: {
+    LOGIN: "auth/login/",
+    REFRESH: "auth/token/refresh/",
+    LOGOUT: "auth/logout/",
+    TOKEN: "auth/token/",
   },
   get baseApi() {
     return this.BASE + "api/" + this.VERSIONAPI;
   },
-  TASK: {
-    TASKLIST: "/tasklist/",
+  TODO: {
+    TASKLIST: "tasklist/",
+    TASK: "task/",
+    COMMENT: "comment/",
   },
 };
 

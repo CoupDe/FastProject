@@ -1,4 +1,4 @@
-import { object, string, number, date, InferType } from "yup";
+import { InferType, object, string } from "yup";
 
 const languageRegex = /^[\w@.]+$/;
 

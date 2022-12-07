@@ -8,12 +8,11 @@ import {
   Radio,
   RadioGroup,
   Typography,
-  useTheme
+  useTheme,
 } from "@mui/material";
 
 import { useAppDispatch } from "../../hook/hook";
 import { getSortedValue } from "../../redux/slices/viewSlice";
-
 
 import SelectDepartament from "./SelectDepartament";
 
@@ -50,7 +49,7 @@ const NavBar = () => {
           <Typography variant="subtitle1">Фильтры:</Typography>
           <Divider
             sx={{
-              borderColor: "#e1d6d6",
+              borderColor: theme.palette.divider,
               marginLeft: "10px",
               borderStyle: "dashed",
             }}
@@ -122,8 +121,7 @@ const NavBar = () => {
           </FormControl>
           <Divider
             sx={{
-              borderColor: "#e1d6d6",
-
+              borderColor: theme.palette.divider,
               borderStyle: "dashed",
             }}
             light

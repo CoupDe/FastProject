@@ -25,7 +25,7 @@ class TodoUserBackend(ModelBackend):
             return user
 
     def authenticate_header(self, token):
-        print('test', token)
+        return token
 
     def get_user(self, user_id):
         return TodoUser.objects.get(pk=user_id)
