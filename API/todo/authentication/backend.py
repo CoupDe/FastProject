@@ -13,7 +13,7 @@ class TodoUserBackend(ModelBackend):
     # Для создания аутентификации необходимо прописать катстомный ModelBackend в AUTHENTICATION_BACKENDS
 
     def authenticate(self, request, login_field=None, password=None, **kwargs):
-        print('Wow this is my auth', login_field)
+        # print('Wow this is my auth', login_field)
         try:
             user = USER.objects.get(
                 Q(email=login_field) | Q(username=login_field)

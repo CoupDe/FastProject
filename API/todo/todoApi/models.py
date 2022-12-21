@@ -35,7 +35,7 @@ class Task(BaseModel):
         max_length=30, choices=Priority.choices, default=Priority.MEDIUM, verbose_name='Важность задачи')
 
     def __str__(self):
-        return f'%{self.description}'
+        return f'%{self.short_description}'
 
 
 class TaskComment(BaseModel):
@@ -44,9 +44,12 @@ class TaskComment(BaseModel):
         blank=False, verbose_name='Задача', default='Описание')
     # Поле связи с id пользователя
     comment_creator = models.ForeignKey(
-        TodoUser, on_delete=models.CASCADE, related_name="creator")
+        to=TodoUser, on_delete=models.CASCADE, related_name="creator")
     comment_task = models.ForeignKey(
-        Task, on_delete=models.CASCADE, related_name="task")
+        to=Task, on_delete=models.CASCADE, related_name="comments")
+
+    class Meta:
+        ordering = ['created_at']
 
     def __str__(self):
         return f'%{self.description}'

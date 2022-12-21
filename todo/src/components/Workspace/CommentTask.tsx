@@ -1,38 +1,70 @@
-import {
-  DialogContentText,
-  Divider, Paper,
-  Typography
-} from "@mui/material";
+import { DialogContentText, Divider, Paper, Typography } from "@mui/material";
+import { motion } from "framer-motion";
+import { wrap } from "module";
 import React, { useState } from "react";
-interface IProps {
-  comment: boolean;
+import { IComment } from "../../typeinterfaces/types";
+interface ICommentProps {
+  comment: IComment;
+  index: number;
+  marginProps: object;
 }
-const CommentTask: React.FC<IProps> = ({ comment }) => {
-  const [showInput, setShowInput] = useState(false);
-  console.log(comment);
+const commentVariants = {
+  show: (index: number) => ({
+    x: index % 2 > 0 ? -150 : 150,
+    opacity: 0,
+    transition: {
+      x: { stiffness: 1000 },
+    },
+  }),
+  visible: (index: number) => ({
+    x: 0,
+    opacity: 1,
+    transition: {
+      x: { stiffness: 1000, velocity: 100 },
+      delay: index * 0.07,
+    },
+  }),
+};
+
+const CommentTask: React.FC<ICommentProps> = ({
+  comment,
+  index,
+  marginProps,
+}) => {
+  const selectorComment = index % 2 > 0 ? true : false;
 
   return (
     <>
       <Paper
+        component={motion.article}
+        variants={commentVariants}
+        custom={index}
         sx={{
+          ...marginProps,
           borderRadius: "12px",
           p: "2px",
+          my: 1,
+          backgroundColor: selectorComment
+            ? "background.paper"
+            : "background.selector",
           border: "3px solid grey",
+          overflowWrap: "break-word",
         }}
       >
-        <Typography variant="subtitle2" align="right">
-          <em>Employye Comment</em>
-        </Typography>
-        <Divider />
-        <DialogContentText
-          variant="body1"
-          id="scroll-dialog-description"
-          tabIndex={-1}
+        <Typography
+          variant="subtitle2"
+          align={selectorComment ? "right" : "left"}
+          mr={1}
         >
-          {"\u00A0"} Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-          Officiis, fugiat nam? Quidem voluptatem ipsum reiciendis corporis
-          adipisci odio ipsa delectus optio molestias officia, molestiae aperiam
-          eos, eligendi itaque, dolores doloremque.
+          <em>
+            {comment.comment_creator} | {comment.created_at}
+          </em>
+        </Typography>
+
+        <Divider />
+
+        <DialogContentText variant="body1" id="scroll-dialog-description">
+          {"\u00A0" + comment.description}
         </DialogContentText>
       </Paper>
     </>

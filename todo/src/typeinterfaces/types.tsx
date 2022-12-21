@@ -32,6 +32,24 @@ export interface ICommentRequest {
   comment_task: number;
   comment_creator: number;
 }
+export interface IComment {
+  description: string;
+  comment_task: string;
+  comment_creator: string;
+  created_at: string;
+  id: string;
+}
+
+export interface ITaskComment {
+  short_description: string;
+  id: number;
+  importance_task: string;
+  updated_at: Date;
+  created_at: string;
+  isComplete: boolean;
+  creator: string;
+  comments: IComment[];
+}
 // export type UserFetchData = IUserToken & IUserInfo;
 export interface UserFetchData extends IUserToken, IUserInfo {}
 //***************Расширение сделано с целью

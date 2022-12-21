@@ -8,10 +8,8 @@ interface IPropsTask {
   taskList: ITask[];
 }
 
-const TaskList: FC<IPropsTask> = ({ taskList }: IPropsTask) => {
+const TaskList: FC<IPropsTask> = ({ taskList }) => {
   // /const { taskList } = useSelector((state: RootState) => state.viewTaskSlice);
-
-  function getData() {}
 
   const item = {
     visible: {

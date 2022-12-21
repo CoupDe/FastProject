@@ -16,7 +16,8 @@ import assertNever from "assert-never";
 // import Dayjs from "dayjs";
 import { AnimatePresence, motion, useAnimation, Variants } from "framer-motion";
 import { FC, useState } from "react";
-import { Link as RouterLink, useLocation } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
+import { usePrefetch } from "../../redux/slices/taskApiSlice";
 import { ITask, PriorityTask } from "../../typeinterfaces/types";
 import StyledTask from "./StyledTask";
 interface iPropsTask {
@@ -108,6 +109,7 @@ const Task: FC<iPropsTask> = ({ task }): JSX.Element => {
   // const [angle] = useState(20);
   const controls = useAnimation();
   const [showButton, setShowButton] = useState<boolean>(false);
+  const prefetchTask = usePrefetch("fetchTask");
 
   // const dataCreate = Dayjs(String(task.created_at)).format("DD-MM-YYYY/H:M");
 
@@ -175,9 +177,12 @@ const Task: FC<iPropsTask> = ({ task }): JSX.Element => {
                     exit={"hide"}
                     variants={variantButton}
                     aria-label="edit task"
+                    onMouseEnter={() =>
+                      prefetchTask(task.id, { ifOlderThan: 30 })
+                    }
                   >
                     <ModeEditIcon fontSize="medium" />
-                  </MotionButton>{" "}
+                  </MotionButton>
                 </RouterLink>
                 <MotionButton
                   key={2}

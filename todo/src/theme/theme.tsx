@@ -21,6 +21,7 @@ export const colorTheme = (mode: PaletteMode) => ({
           },
           background: {
             paper: "#cec9c9",
+            selector: "#6c6a6a",
           },
           info: {
             main: "#3388dd",
@@ -45,6 +46,7 @@ export const colorTheme = (mode: PaletteMode) => ({
           },
           background: {
             paper: "#5d5c5c",
+            selector: "#6c6a6a",
           },
           info: {
             main: "#3388dd",

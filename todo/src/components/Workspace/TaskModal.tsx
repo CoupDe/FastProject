@@ -1,46 +1,101 @@
+import CommentIcon from "@mui/icons-material/Comment";
 import {
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
+  Divider,
+  IconButton,
   Typography,
   useMediaQuery,
-  useTheme
+  useTheme,
 } from "@mui/material";
-
 import { Box } from "@mui/system";
+import { X } from "@styled-icons/feather";
+import { AnimatePresence, motion, Variant } from "framer-motion";
 import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import SyncLoader from "react-spinners/SyncLoader";
-import { ITask } from "../../typeinterfaces/types";
+import { useFetchTaskQuery } from "../../redux/slices/taskApiSlice";
 import CommentInput from "./CommentInput";
 import CommentTask from "./CommentTask";
+const CommentVariants = {
+  hidden: {
+    x: 50,
+    opacity: 1,
+    transition: {
+      y: { stiffness: 1000 },
+    },
+  },
+  visible: (i: number) => ({
+    x: 0,
+    opacity: 1,
+    transition: {
+      y: { stiffness: 1000, velocity: -100 },
+      delay: i * 0.05,
+    },
+  }),
+};
+const parentVariant = {
+  visible: {
+    opacity: 1,
+    y: -20,
+    transition: {
+      when: "beforeChildren",
+      staggerChildren: 1,
+
+      default: { ease: "easeInOut" },
+    },
+  },
+  show: {
+    opacity: 0,
+    x: 1,
+    transition: {
+      when: "afterChildren",
+    },
+  },
+  // open: {
+  //   transition: { staggerChildren: 0.07, delayChildren: 0.2 },
+  // },
+  // closed: {
+  //   transition: { staggerChildren: 0.05, staggerDirection: -1 },
+  // },
+  // initial: { x: -10, opacity: 0 },
+  // visible: {
+  //   opacity: 1,
+  //   x: 10,
+  //   transition: {
+  //     staggerChildren: 0.3,
+  //   },
+  // },
+  // hidden: { x: 10, opacity: 0 },
+};
 
 const TaskModal = () => {
   const [isOpen, setIsOpen] = useState(true);
-  const [comment, setComment] = useState(false);
+  const [showComments, setShowComments] = useState(false);
 
+  const { taskId } = useParams();
 
-  const location = useLocation();
-  const task = location.state as ITask;
-
+  //  const task = location.state as ITask;
+  const { data: task } = useFetchTaskQuery(+taskId!, {
+    refetchOnMountOrArgChange: true,
+  });
+  console.log(task);
   const navigate = useNavigate();
   // const task = useAppSelector((state) =>
   //   state.viewTaskSlice.taskList.find((task) => task.id === +taskId!)
   // );
+  const handleShowComments = () => {
+    setShowComments(!showComments);
+  };
 
-  const isSuccess = true;
   // const { data, isSuccess } = useFetchTaskQuery(+taskId! ?? skipToken);
   // const { data } = useFetchTaskQuery(+taskId);
 
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
-
-  const handleopenTask = () => {};
-  const handleCloseDialog = () => {
-    setIsOpen(!isOpen);
-  };
 
   return (
     <>
@@ -53,7 +108,7 @@ const TaskModal = () => {
         aria-labelledby="scroll-dialog-title"
         aria-describedby="scroll-dialog-description"
       >
-        {isSuccess ? (
+        {task ? (
           <>
             <Box
               sx={{
@@ -90,11 +145,41 @@ const TaskModal = () => {
                 </Typography>
               </Box>
             </Box>
-            <DialogContent dividers={true}>
+            <DialogContent dividers={true} sx={{ overflowX: "hidden" }}>
               <Typography variant="subtitle2">Описание:</Typography>
+
               <Typography variant="body1">{task.short_description}</Typography>
+              <Divider sx={{ mx: -2 }}>
+                <IconButton
+                  disableRipple
+                  size="small"
+                  onClick={handleShowComments}
+                >
+                  <CommentIcon fontSize="small" />
+                </IconButton>
+              </Divider>
               {/* Comment Component */}
-              <CommentTask comment={comment} />
+
+              {task.comments.length > 0 && (
+                <Box
+                  sx={{ mt: 2 }}
+                  component={motion.div}
+                  variants={parentVariant}
+                  initial="show"
+                  animate="visible"
+                >
+                  {showComments &&
+                    task.comments.map((comment, _i) => (
+                      <CommentTask
+                        key={comment.id}
+                        index={_i}
+                        comment={comment}
+                        marginProps={_i % 2 > 0 ? { ml: 2 } : { mr: 2 }}
+                      />
+                    ))}
+                </Box>
+              )}
+
               <CommentInput />
             </DialogContent>
             <DialogActions>
@@ -104,8 +189,16 @@ const TaskModal = () => {
             </DialogActions>
           </>
         ) : (
-          <Box sx={{ height: "50px" }}>
-            <SyncLoader />
+          <Box
+            sx={{
+              height: "300px",
+              display: "flex",
+              justifyContent: "center",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <SyncLoader color="grey" />
           </Box>
         )}
       </Dialog>
@@ -114,3 +207,12 @@ const TaskModal = () => {
 };
 
 export default TaskModal;
+{
+  /* <motion.li
+key={_i + 0.3}
+custom={_i}
+variants={CommentVariants}
+>
+{_i + 0.3}
+</motion.li> */
+}
