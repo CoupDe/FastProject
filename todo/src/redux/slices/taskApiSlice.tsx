@@ -37,12 +37,12 @@ export const taskApiSlice = taskApi.injectEndpoints({
     //                   *        тип параметра
     fetchTask: build.query<ITaskComment, number>({
       query: (id) => baseAPIURL(ENDPOINTS.TODO.TASK) + `${id}`,
+      providesTags: ["Comment"],
     }),
 
     addComment: build.mutation<{ title: string }, ICommentRequest>({
       query(data: ICommentRequest) {
         const { comment_task } = data;
-
         return {
           url: `${
             baseAPIURL(ENDPOINTS.TODO.TASK) +
@@ -54,9 +54,7 @@ export const taskApiSlice = taskApi.injectEndpoints({
           body: data,
         };
       },
-      invalidatesTags: (result, error, arg) => [
-        { type: "Comment", id: arg.comment_task },
-      ],
+      invalidatesTags: ["Comment"],
     }),
   }),
 });

@@ -1,3 +1,4 @@
+import { Pagination } from "@mui/material";
 import { motion, Variants } from "framer-motion";
 import NavBar from "../components/Workspace/NavBar";
 import TaskList from "../components/Workspace/TaskList";
@@ -9,7 +10,7 @@ import {
   MainContainer,
   NavContainer,
 } from "./StyledWorkSpace";
-const taskContainer = {
+const taskContainerVariant = {
   visible: {
     opacity: 1,
     transition: {
@@ -34,7 +35,7 @@ const ToDoLayout = () => {
       </AsideContainer>
 
       <MotionContainer
-        variants={taskContainer}
+        variants={taskContainerVariant}
         initial={"hidden"}
         animate={"visible"}
         // variants={container}
@@ -42,7 +43,21 @@ const ToDoLayout = () => {
         forwardedAs={"main"}
         elevation={12}
       >
-        {isSuccess && <TaskList taskList={taskList} />}
+        {isSuccess && (
+          <>
+            <TaskList taskList={taskList} />
+            <Pagination
+              sx={{
+                position: "absolute",
+                bottom: 1,
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+              }}
+              count={Math.ceil(taskList.length / 9)}
+              variant="outlined"
+            />
+          </>
+        )}
       </MotionContainer>
     </GridContainer>
   );

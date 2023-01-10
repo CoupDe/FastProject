@@ -41,6 +41,7 @@ export const MainContainer = styled(Paper)`
   grid-column-gap: 1em;
   grid-row-gap: 1em; //???
   padding: 12px;
+  position: relative;
   /* grid-column-start: 1;
   grid-column-end: 2;
   grid-row-start: 1;

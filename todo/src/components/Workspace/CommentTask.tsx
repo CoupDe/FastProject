@@ -1,7 +1,6 @@
 import { DialogContentText, Divider, Paper, Typography } from "@mui/material";
 import { motion } from "framer-motion";
-import { wrap } from "module";
-import React, { useState } from "react";
+import React from "react";
 import { IComment } from "../../typeinterfaces/types";
 interface ICommentProps {
   comment: IComment;

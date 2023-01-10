@@ -6,13 +6,13 @@ import TextIncreaseIcon from "@mui/icons-material/TextIncrease";
 import { Formik } from "formik";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
+import { useParams } from "react-router-dom";
 import { useAppSelector } from "../../hook/hook";
 import { useAddCommentMutation } from "../../redux/slices/taskApiSlice";
 import {
   commentScheme,
-  TCommentInput,
+  TCommentInput
 } from "../../validation/commentTaskValidation";
-import { useParams } from "react-router-dom";
 const initialValueInput: TCommentInput = { comment: "" };
 
 const CommentInput = () => {
@@ -31,13 +31,13 @@ const CommentInput = () => {
   return (
     <>
       <AnimatePresence>
-        {showInput && (
+        {showInput ? (
           <Box
             component={motion.div}
             initial={{ opacity: 1, width: 0, marginTop: "0px" }}
             animate={{
               opacity: 1,
-              marginTop: "16px",
+
               width: "100%",
             }}
             transition={{
@@ -50,15 +50,13 @@ const CommentInput = () => {
               initialValues={initialValueInput}
               validationSchema={commentScheme}
               onSubmit={(values, actions) => {
-                setTimeout(() => {
-                  addComment({
-                    comment_task: +taskId!,
-                    description: values.comment,
-                    comment_creator: +userId,
-                  });
-                  alert(JSON.stringify(values, null, 2));
-                  actions.setSubmitting(false);
-                }, 1000);
+                addComment({
+                  comment_task: +taskId!,
+                  description: values.comment,
+                  comment_creator: +userId,
+                });
+
+                actions.setSubmitting(false);
               }}
             >
               {/* () =>
@@ -94,6 +92,8 @@ const CommentInput = () => {
               )}
             </Formik>
           </Box>
+        ) : (
+          <Box></Box>
         )}
       </AnimatePresence>
 
@@ -101,14 +101,13 @@ const CommentInput = () => {
         sx={{
           justifyContent: "flex-end",
           display: "flex",
-
-          mt: 2,
+          ml: 1,
+          my: 1,
           alignItems: "center",
         }}
         spacing={2}
         direction="row"
       >
-        {" "}
         {showInput && showSendButton && (
           <Fab size="small" form="commentForm" type="submit" variant="circular">
             <ForwardToInboxIcon fontSize="small" />

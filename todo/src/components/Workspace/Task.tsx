@@ -31,7 +31,7 @@ frozen peas along with the mussels, if you like. This impressive
 paella is a perfect party dish and a fun meal to cook together with
 your guests. Add 1 cup of frozen peas along with the mussels, if you
 like.`;
-const variantsPaper: Variants = {
+export const variantsPaper: Variants = {
   hoverEffect: {
     scale: [1, 0.97, 1.03],
 
@@ -100,27 +100,12 @@ function taskStatus(importance_task: PriorityTask): JSX.Element {
       return assertNever(importance_task, true); //Функция которая утверждает что все варианты рассмотрены
   }
 }
-const MotionPaper = motion(StyledTask);
+export const MotionPaper = motion(StyledTask);
 const MotionButton = motion(IconButton);
 const Task: FC<iPropsTask> = ({ task }): JSX.Element => {
-  //RRDV module
-  // let state = location.state as { backgroundLocation?: Location };
-  // console.log(state);
-  // const [angle] = useState(20);
   const controls = useAnimation();
   const [showButton, setShowButton] = useState<boolean>(false);
   const prefetchTask = usePrefetch("fetchTask");
-
-  // const dataCreate = Dayjs(String(task.created_at)).format("DD-MM-YYYY/H:M");
-
-  // const y = useMotionValue(0.5);
-  // const x = useMotionValue(0.5);
-  // const rotateY = useTransform(x, [0, 1], [-angle, angle], {
-  //   clamp: true,
-  // });
-  // const rotateX = useTransform(y, [0, 1], [angle, -angle], {
-  //   clamp: true,
-  // });
 
   const hoverShowButtonGroup = () => {
     setShowButton(true);
@@ -131,14 +116,6 @@ const Task: FC<iPropsTask> = ({ task }): JSX.Element => {
     setShowButton(false);
     // x.set(0.5, true);
   };
-  // const tiltTask = (e: React.PointerEvent<HTMLDivElement>) => {
-  //   const bounds = e.currentTarget.getBoundingClientRect();
-
-  //   const xValue = (e.clientX - bounds.x) / e.currentTarget.clientWidth;
-
-  //   x.set(xValue, true);
-  //   //  y.set(yValue, true);
-  // };
 
   return (
     <MotionPaper
@@ -157,7 +134,13 @@ const Task: FC<iPropsTask> = ({ task }): JSX.Element => {
           title={task.short_description}
           subheader={task.created_at}
         ></CardHeader>
-        <CardContent>
+        <CardContent
+          sx={{
+            "&:last-child": {
+              paddingBottom: 0,
+            },
+          }}
+        >
           <Typography variant="body2" color="text.secondary">
             {/* Добавить описание */}
             {ss.length > 300 ? ss.slice(0, 200) + "......." : ss}

@@ -10,33 +10,17 @@ import {
   Typography,
   useMediaQuery,
   useTheme,
+  Box,
 } from "@mui/material";
-import { Box } from "@mui/system";
-import { X } from "@styled-icons/feather";
-import { AnimatePresence, motion, Variant } from "framer-motion";
+
+import { motion } from "framer-motion";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import SyncLoader from "react-spinners/SyncLoader";
 import { useFetchTaskQuery } from "../../redux/slices/taskApiSlice";
 import CommentInput from "./CommentInput";
 import CommentTask from "./CommentTask";
-const CommentVariants = {
-  hidden: {
-    x: 50,
-    opacity: 1,
-    transition: {
-      y: { stiffness: 1000 },
-    },
-  },
-  visible: (i: number) => ({
-    x: 0,
-    opacity: 1,
-    transition: {
-      y: { stiffness: 1000, velocity: -100 },
-      delay: i * 0.05,
-    },
-  }),
-};
+
 const parentVariant = {
   visible: {
     opacity: 1,
@@ -55,26 +39,12 @@ const parentVariant = {
       when: "afterChildren",
     },
   },
-  // open: {
-  //   transition: { staggerChildren: 0.07, delayChildren: 0.2 },
-  // },
-  // closed: {
-  //   transition: { staggerChildren: 0.05, staggerDirection: -1 },
-  // },
-  // initial: { x: -10, opacity: 0 },
-  // visible: {
-  //   opacity: 1,
-  //   x: 10,
-  //   transition: {
-  //     staggerChildren: 0.3,
-  //   },
-  // },
-  // hidden: { x: 10, opacity: 0 },
 };
 
 const TaskModal = () => {
   const [isOpen, setIsOpen] = useState(true);
   const [showComments, setShowComments] = useState(false);
+  const [createComment, setCreateComment] = useState(false);
 
   const { taskId } = useParams();
 
@@ -82,7 +52,6 @@ const TaskModal = () => {
   const { data: task } = useFetchTaskQuery(+taskId!, {
     refetchOnMountOrArgChange: true,
   });
-  console.log(task);
   const navigate = useNavigate();
   // const task = useAppSelector((state) =>
   //   state.viewTaskSlice.taskList.find((task) => task.id === +taskId!)
@@ -90,7 +59,9 @@ const TaskModal = () => {
   const handleShowComments = () => {
     setShowComments(!showComments);
   };
-
+  const handleShowCommentInput = () => {
+    setCreateComment(!createComment);
+  };
   // const { data, isSuccess } = useFetchTaskQuery(+taskId! ?? skipToken);
   // const { data } = useFetchTaskQuery(+taskId);
 
@@ -179,12 +150,25 @@ const TaskModal = () => {
                     ))}
                 </Box>
               )}
-
-              <CommentInput />
             </DialogContent>
-            <DialogActions>
-              <Button onClick={() => navigate(-1)}>Cancel</Button>
-              <Button onClick={() => navigate(-1)}>Submit</Button>
+            <DialogActions
+              sx={{ flexDirection: "column", alignItems: "flex-end" }}
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  width: "100%",
+                  justifyContent: "flex-end",
+                  marginTop: "16px",
+                }}
+              >
+                <CommentInput />
+              </Box>
+              <Box>
+                <Button onClick={() => navigate(-1)}>Cancel</Button>
+                <Button onClick={() => navigate(-1)}>Submit</Button>
+              </Box>
               {/* <Button onClick={handleClose}>Subscribe</Button> */}
             </DialogActions>
           </>
@@ -207,12 +191,3 @@ const TaskModal = () => {
 };
 
 export default TaskModal;
-{
-  /* <motion.li
-key={_i + 0.3}
-custom={_i}
-variants={CommentVariants}
->
-{_i + 0.3}
-</motion.li> */
-}

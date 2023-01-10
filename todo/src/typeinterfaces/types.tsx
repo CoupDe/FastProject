@@ -70,6 +70,7 @@ export interface ITask {
   creator: string;
   isComplete: boolean;
   updated_at: string;
+  description: string;
 }
 
 //***************ERROR TYPES & INTERFACE***************
